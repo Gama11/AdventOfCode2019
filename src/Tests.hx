@@ -15,6 +15,11 @@ class Tests implements ITest {
 	}
 
 	function testDay01() {
-		
+		Assert.equals(2, Day01.calculateFuelRequirement(12));
+		Assert.equals(2, Day01.calculateFuelRequirement(14));
+		Assert.equals(654, Day01.calculateFuelRequirement(1969));
+		Assert.equals(33583, Day01.calculateFuelRequirement(100756));
+
+		Assert.equals(3147032, Day01.calculateFuelRequirements(getData("day01")));
 	}
 }
