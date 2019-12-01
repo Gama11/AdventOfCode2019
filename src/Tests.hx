@@ -19,7 +19,11 @@ class Tests implements ITest {
 		Assert.equals(2, Day01.calculateFuelRequirement(14));
 		Assert.equals(654, Day01.calculateFuelRequirement(1969));
 		Assert.equals(33583, Day01.calculateFuelRequirement(100756));
+		Assert.equals(3147032, Day01.sumFuelRequirements(getData("day01"), Day01.calculateFuelRequirement));
 
-		Assert.equals(3147032, Day01.calculateFuelRequirements(getData("day01")));
+		Assert.equals(2, Day01.calculateTotalFuelRequirement(14));
+		Assert.equals(966, Day01.calculateTotalFuelRequirement(1969));
+		Assert.equals(50346, Day01.calculateTotalFuelRequirement(100756));
+		Assert.equals(4717699, Day01.sumFuelRequirements(getData("day01"), Day01.calculateTotalFuelRequirement));
 	}
 }

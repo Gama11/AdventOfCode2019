@@ -6,10 +6,16 @@ class Day01 {
 	}
 
 	public static function calculateFuelRequirement(mass:Int):Int {
-		return Std.int(mass / 3) - 2;
+		var fuel = Std.int(mass / 3) - 2;
+		return if (fuel < 0) 0 else fuel;
 	}
 
-	public static function calculateFuelRequirements(input:String):Int {
-		return parse(input).map(calculateFuelRequirement).sum();
+	public static function calculateTotalFuelRequirement(mass:Int):Int {
+		var fuel = calculateFuelRequirement(mass);
+		return if (fuel <= 0) fuel else fuel + calculateTotalFuelRequirement(fuel);
+	}
+
+	public static function sumFuelRequirements(input:String, calculate:(mass:Int) -> Int):Int {
+		return parse(input).map(calculate).sum();
 	}
 }
