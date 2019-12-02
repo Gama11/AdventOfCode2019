@@ -26,4 +26,11 @@ class Tests implements ITest {
 		Assert.equals(50346, Day01.calculateTotalFuelRequirement(100756));
 		Assert.equals(4717699, Day01.sumFuelRequirements(getData("day01"), Day01.calculateTotalFuelRequirement));
 	}
+
+	function testDay02() {
+		Assert.equals(3500, Day02.runIntcode([1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50]));
+		Assert.equals(2, Day02.runIntcode([1, 0, 0, 0, 99]));
+		Assert.equals(30, Day02.runIntcode([1, 1, 1, 4, 99, 5, 6, 0, 99]));
+		Assert.equals(5098658, Day02.runGravityAssistProgram(getData("day02")));
+	}
 }
