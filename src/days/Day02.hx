@@ -6,22 +6,23 @@ class Day02 {
 	}
 
 	public static function runIntcode(program:Program):Int {
+		var memory = program.copy();
 		var i = 0;
 		while (true) {
 			function next() {
 				return ++i;
 			}
-			var opcode:Opcode = program[i];
+			var opcode:Opcode = memory[i];
 			switch opcode {
 				case Add | Multiply:
-					var a = program[program[next()]];
-					var b = program[program[next()]];
-					var c = program[next()];
-					program[c] = if (opcode == Add) a + b else a * b;
+					var a = memory[memory[next()]];
+					var b = memory[memory[next()]];
+					var c = memory[next()];
+					memory[c] = if (opcode == Add) a + b else a * b;
 					next();
 
 				case Finish:
-					return program[0];
+					return memory[0];
 
 				case code:
 					throw 'unknown opcode $code';
@@ -29,11 +30,23 @@ class Day02 {
 		}
 	}
 
-	public static function runGravityAssistProgram(input:String):Int {
-		var program = parse(input);
-		program[1] = 12;
-		program[2] = 2;
+	public static function runGravityAssistProgram(program:Program, noun = 12, verb = 2):Int {
+		program[1] = noun;
+		program[2] = verb;
 		return runIntcode(program);
+	}
+
+	public static function findInputForOutput(program:Program, output:Int):Int {
+		for (noun in 0...100) {
+			for (verb in 0...100) {
+				try {
+					if (output == runGravityAssistProgram(program, noun, verb)) {
+						return 100 * noun + verb;
+					}
+				} catch (e:Any) {}
+			}
+		}
+		throw "not found";
 	}
 }
 

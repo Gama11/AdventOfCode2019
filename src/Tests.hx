@@ -31,6 +31,9 @@ class Tests implements ITest {
 		Assert.equals(3500, Day02.runIntcode([1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50]));
 		Assert.equals(2, Day02.runIntcode([1, 0, 0, 0, 99]));
 		Assert.equals(30, Day02.runIntcode([1, 1, 1, 4, 99, 5, 6, 0, 99]));
-		Assert.equals(5098658, Day02.runGravityAssistProgram(getData("day02")));
+
+		var data = Day02.parse(getData("day02"));
+		Assert.equals(5098658, Day02.runGravityAssistProgram(data));
+		Assert.equals(0, Day02.findInputForOutput(data, 19690720));
 	}
 }
