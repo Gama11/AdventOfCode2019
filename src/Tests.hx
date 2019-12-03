@@ -34,6 +34,13 @@ class Tests implements ITest {
 
 		var data = Day02.parse(getData("day02"));
 		Assert.equals(5098658, Day02.runGravityAssistProgram(data));
-		Assert.equals(0, Day02.findInputForOutput(data, 19690720));
+		Assert.equals(5064, Day02.findInputForOutput(data, 19690720));
+	}
+
+	function testDay03() {
+		Assert.equals(6, Day03.getDistanceToClosestIntersection(getData("day03-0")));
+		Assert.equals(159, Day03.getDistanceToClosestIntersection(getData("day03-1")));
+		Assert.equals(135, Day03.getDistanceToClosestIntersection(getData("day03-2")));
+		Assert.equals(1337, Day03.getDistanceToClosestIntersection(getData("day03-3")));
 	}
 }
