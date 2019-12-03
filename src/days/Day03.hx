@@ -30,7 +30,7 @@ class Day03 {
 		};
 	}
 
-	public static function getDistanceToClosestIntersection(input:String):Int {
+	public static function getDistanceToClosestIntersection(input:String, distanceMetric:DistanceMetric):Int {
 		var paths = parse(input);
 		var centralPort = new Point(0, 0);
 		var grid = new Grid();
@@ -38,19 +38,28 @@ class Day03 {
 		function walkPath(path:Path, wire:Wire) {
 			var otherWire = if (wire == First) Second else First;
 			var p = centralPort;
+			var steps = 0;
 			for (line in path) {
 				for (_ in 0...line.length) {
 					p = p.add(line.direction);
-					var previous = grid.get(p);
-					grid.set(p, switch previous {
+					steps++;
+
+					var cell = grid.get(p);
+					if (cell == null) {
+						cell = {steps: 0, wire: None};
+					}
+					var newSteps = steps;
+					var newWire = switch cell.wire {
 						case Both:
 							Both;
 						case wire if (wire == otherWire):
 							intersections.push(p);
+							newSteps += cell.steps;
 							Both;
 						case _:
 							wire;
-					});
+					};
+					grid.set(p, {steps: newSteps, wire: newWire});
 				}
 			}
 		}
@@ -59,19 +68,8 @@ class Day03 {
 		if (intersections.length == 0) {
 			throw 'no intersections';
 		}
-		return intersections.min(p -> p.distanceTo(centralPort)).value;
-	}
-
-	static function debug(grid:Grid) {
-		trace("\n" + Util.renderPointGrid([
-			for (point in grid.keys()) {
-				point;
-			}
-		], point -> switch grid.get(point) {
-			case First: "A";
-			case Second: "B";
-			case Both: "X";
-		}));
+		var getDistance = if (distanceMetric == Manhattan) p -> p.distanceTo(centralPort) else p -> grid.get(p).steps;
+		return intersections.min(getDistance).value;
 	}
 }
 
@@ -87,10 +85,21 @@ private typedef WirePaths = {
 	final second:Path;
 }
 
+private typedef Cell = {
+	final steps:Int;
+	final wire:Wire;
+}
+
 private enum Wire {
 	First;
 	Second;
 	Both;
+	None;
 }
 
-private typedef Grid = HashMap<Point, Wire>;
+private typedef Grid = HashMap<Point, Cell>;
+
+private enum DistanceMetric {
+	Manhattan;
+	Steps;
+}

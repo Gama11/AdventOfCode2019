@@ -38,9 +38,16 @@ class Tests implements ITest {
 	}
 
 	function testDay03() {
-		Assert.equals(6, Day03.getDistanceToClosestIntersection(getData("day03-0")));
-		Assert.equals(159, Day03.getDistanceToClosestIntersection(getData("day03-1")));
-		Assert.equals(135, Day03.getDistanceToClosestIntersection(getData("day03-2")));
-		Assert.equals(1337, Day03.getDistanceToClosestIntersection(getData("day03-3")));
+		var part1 = file -> Day03.getDistanceToClosestIntersection(getData(file), Manhattan);
+		Assert.equals(6, part1("day03-0"));
+		Assert.equals(159, part1("day03-1"));
+		Assert.equals(135, part1("day03-2"));
+		Assert.equals(1337, part1("day03-3"));
+
+		var part2 = file -> Day03.getDistanceToClosestIntersection(getData(file), Steps);
+		Assert.equals(30, part2("day03-0"));
+		Assert.equals(610, part2("day03-1"));
+		Assert.equals(410, part2("day03-2"));
+		Assert.equals(65356, part2("day03-3"));
 	}
 }
