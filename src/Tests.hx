@@ -37,6 +37,7 @@ class Tests implements ITest {
 		Assert.equals(5064, Day02.findInputForOutput(data, 19690720));
 	}
 
+	@Ignored
 	function testDay03() {
 		var part1 = file -> Day03.getDistanceToClosestIntersection(getData(file), Manhattan);
 		Assert.equals(6, part1("day03-0"));
@@ -49,5 +50,12 @@ class Tests implements ITest {
 		Assert.equals(610, part2("day03-1"));
 		Assert.equals(410, part2("day03-2"));
 		Assert.equals(65356, part2("day03-3"));
+	}
+
+	function testDay04() {
+		Assert.isTrue(Day04.meetsCritera(111111));
+		Assert.isFalse(Day04.meetsCritera(223450));
+		Assert.isFalse(Day04.meetsCritera(123789));
+		Assert.equals(481, Day04.findValidPasswords(372037, 905157).length);
 	}
 }
