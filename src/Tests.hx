@@ -56,6 +56,11 @@ class Tests implements ITest {
 		Assert.isTrue(Day04.meetsCritera(111111));
 		Assert.isFalse(Day04.meetsCritera(223450));
 		Assert.isFalse(Day04.meetsCritera(123789));
-		Assert.equals(481, Day04.findValidPasswords(372037, 905157).length);
+		Assert.equals(481, Day04.countValidPasswords(372037, 905157));
+
+		Assert.isTrue(Day04.meetsCritera(112233, true));
+		Assert.isFalse(Day04.meetsCritera(123444, true));
+		Assert.isTrue(Day04.meetsCritera(111122, true));
+		Assert.equals(299, Day04.countValidPasswords(372037, 905157, true));
 	}
 }
