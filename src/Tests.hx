@@ -63,4 +63,9 @@ class Tests implements ITest {
 		Assert.isTrue(Day04.meetsCritera(111122, true));
 		Assert.equals(299, Day04.countValidPasswords(372037, 905157, true));
 	}
+
+	function testDay05() {
+		Assert.equals(0, Day05.runIntcode([1002, 4, 3, 4, 33], []).length);
+		Assert.equals(0, Day05.runTEST(getData("day05")));
+	}
 }
