@@ -65,7 +65,38 @@ class Tests implements ITest {
 	}
 
 	function testDay05() {
-		Assert.equals(0, Day05.runIntcode([1002, 4, 3, 4, 33], []).length);
-		Assert.equals(0, Day05.runTEST(getData("day05")));
+		Assert.isNull(Day05.runIntcode("1002,4,3,4,33", []));
+		Assert.equals(14155342, Day05.runIntcode(getData("day05-0"), [1]));
+
+		var equalsEightA = n -> Day05.runIntcode("3,9,8,9,10,9,4,9,99,-1,8", [n]);
+		Assert.equals(1, equalsEightA(8));
+		Assert.equals(0, equalsEightA(5));
+
+		var lessThanEightA = n -> Day05.runIntcode("3,9,7,9,10,9,4,9,99,-1,8", [n]);
+		Assert.equals(0, lessThanEightA(8));
+		Assert.equals(1, lessThanEightA(5));
+
+		var equalsEightB = n -> Day05.runIntcode("3,3,1108,-1,8,3,4,3,99", [n]);
+		Assert.equals(1, equalsEightB(8));
+		Assert.equals(0, equalsEightB(5));
+
+		var lessThanEightB = n -> Day05.runIntcode("3,3,1107,-1,8,3,4,3,99", [n]);
+		Assert.equals(0, lessThanEightB(8));
+		Assert.equals(1, lessThanEightB(5));
+
+		var isNonZeroA = n -> Day05.runIntcode("3,12,6,12,15,1,13,14,13,4,13,99,-1,0,1,9", [n]);
+		Assert.equals(1, isNonZeroA(1));
+		Assert.equals(0, isNonZeroA(0));
+
+		var isNonZeroB = n -> Day05.runIntcode("3,3,1105,-1,9,1101,0,0,12,4,12,99,1", [n]);
+		Assert.equals(1, isNonZeroB(1));
+		Assert.equals(0, isNonZeroB(0));
+
+		var largerExample = n -> Day05.runIntcode(getData("day05-1"), [n]);
+		Assert.equals(999, largerExample(7));
+		Assert.equals(1000, largerExample(8));
+		Assert.equals(1001, largerExample(9));
+
+		Assert.equals(8684145, Day05.runIntcode(getData("day05-0"), [5]));
 	}
 }

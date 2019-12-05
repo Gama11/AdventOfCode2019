@@ -17,42 +17,58 @@ class Day05 {
 		};
 	}
 
-	public static function runIntcode(program:Program, inputs:Array<Int>):Array<Int> {
+	public static function runIntcode(program:String, inputs:Array<Int>):Int {
 		var outputs = [];
-		var memory = program.copy();
+		var memory = parseProgram(program);
 		var i = 0;
-		function read(value:Int, mode:ParameterMode):Int {
-			var value = memory[value];
+		function read(mode:ParameterMode):Int {
+			var value = memory[i++];
 			return if (mode == Position) memory[value] else value;
 		}
-		function write(pos:Int, value:Int) {
-			memory[memory[pos]] = value;
+		function write(value:Int) {
+			memory[memory[i++]] = value;
 		}
 		while (true) {
 			var op:Operation = parseOperation(memory[i++]);
 			switch op.code {
 				case Add | Multiply:
-					var a = read(i++, op.modes.a);
-					var b = read(i++, op.modes.b);
-					write(i++, if (op.code == Add) a + b else a * b);
+					var a = read(op.modes.a);
+					var b = read(op.modes.b);
+					write(if (op.code == Add) a + b else a * b);
 
 				case Input:
-					write(i++, inputs.shift());
+					write(inputs.shift());
 
 				case Output:
-					outputs.push(read(i++, op.modes.a));
+					outputs.push(read(op.modes.a));
+
+				case JumpIfTrue:
+					var a = read(op.modes.a);
+					var b = read(op.modes.b);
+					if (a != 0) {
+						i = b;
+					}
+
+				case JumpIfFalse:
+					var a = read(op.modes.a);
+					var b = read(op.modes.b);
+					if (a == 0) {
+						i = b;
+					}
+
+				case LessThan:
+					write(if (read(op.modes.a) < read(op.modes.b)) 1 else 0);
+
+				case Equals:
+					write(if (read(op.modes.a) == read(op.modes.b)) 1 else 0);
 
 				case Finish:
-					return outputs;
+					return outputs.pop();
 
 				case code:
 					throw 'unknown opcode $code';
 			}
 		}
-	}
-
-	public static function runTEST(input:String):Int {
-		return runIntcode(parseProgram(input), [1]).pop();
 	}
 }
 
@@ -66,6 +82,10 @@ private enum abstract Opcode(Int) from Int {
 	var Multiply;
 	var Input;
 	var Output;
+	var JumpIfTrue;
+	var JumpIfFalse;
+	var LessThan;
+	var Equals;
 	var Finish = 99;
 }
 
