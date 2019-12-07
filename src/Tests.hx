@@ -99,4 +99,9 @@ class Tests implements ITest {
 
 		Assert.equals(8684145, Day05.runIntcode(getData("day05-0"), [5]));
 	}
+
+	function testDay06() {
+		Assert.equals(42, Day06.countOrbits(getData("day06-0")));
+		Assert.equals(119831, Day06.countOrbits(getData("day06-1")));
+	}
 }
