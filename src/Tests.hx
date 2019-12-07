@@ -107,4 +107,11 @@ class Tests implements ITest {
 		Assert.equals(4, Day06.countOrbitalTransfers(getData("day06-2")));
 		Assert.equals(322, Day06.countOrbitalTransfers(getData("day06-1")));
 	}
+
+	function testDay07() {
+		Assert.equals(43210, Day07.findMaxThrusterSignal(getData("day07-0")));
+		Assert.equals(54321, Day07.findMaxThrusterSignal(getData("day07-1")));
+		Assert.equals(65210, Day07.findMaxThrusterSignal(getData("day07-2")));
+		Assert.equals(101490, Day07.findMaxThrusterSignal(getData("day07-3")));
+	}
 }
