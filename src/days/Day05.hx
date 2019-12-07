@@ -17,10 +17,9 @@ class Day05 {
 		};
 	}
 
-	public static function runIntcode(program:String, inputs:Array<Int>):Int {
+	public static function runIntcode(program:Program, inputs:Array<Int>, i = 0):Result {
 		var outputs = [];
-		var memory = parseProgram(program);
-		var i = 0;
+		var memory = program;
 		function read(mode:ParameterMode):Int {
 			var value = memory[i++];
 			return if (mode == Position) memory[value] else value;
@@ -37,7 +36,15 @@ class Day05 {
 					write(if (op.code == Add) a + b else a * b);
 
 				case Input:
-					write(inputs.shift());
+					var input = if (inputs.length == 0) {
+						if (outputs.length > 1) {
+							throw 'only one output expected, got $outputs';
+						}
+						return Blocked(i - 1, outputs[0]);
+					} else {
+						inputs.shift();
+					}
+					write(input);
 
 				case Output:
 					outputs.push(read(op.modes.a));
@@ -63,7 +70,7 @@ class Day05 {
 					write(if (read(op.modes.a) == read(op.modes.b)) 1 else 0);
 
 				case Finish:
-					return outputs.pop();
+					return Finished(outputs.pop());
 
 				case code:
 					throw 'unknown opcode $code';
@@ -98,4 +105,9 @@ private typedef Operation = {
 	var code:Opcode;
 }
 
-private typedef Program = Array<Int>;
+typedef Program = Array<Int>;
+
+enum Result {
+	Blocked(i:Int, output:Int);
+	Finished(output:Int);
+}
