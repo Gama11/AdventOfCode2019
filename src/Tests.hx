@@ -103,5 +103,8 @@ class Tests implements ITest {
 	function testDay06() {
 		Assert.equals(42, Day06.countOrbits(getData("day06-0")));
 		Assert.equals(119831, Day06.countOrbits(getData("day06-1")));
+
+		Assert.equals(4, Day06.countOrbitalTransfers(getData("day06-2")));
+		Assert.equals(322, Day06.countOrbitalTransfers(getData("day06-1")));
 	}
 }
