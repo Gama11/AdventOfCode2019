@@ -34,4 +34,25 @@ class Day08 {
 		var layer = layer.flatten();
 		return layer.count(i -> i == 1) * layer.count(i -> i == 2);
 	}
+
+	public static function decodeImage(input:String, width:Int, height:Int):String {
+		var layers = parse(input, width, height);
+		var image = [for (_ in 0...height) [for (_ in 0...width) Transparent]];
+		for (layer in layers) {
+			for (y in 0...height) {
+				for (x in 0...width) {
+					if (image[y][x] == Transparent) {
+						image[y][x] = layer[y][x];
+					}
+				}
+			}
+		}
+		return image.map(row -> row.map(p -> if (p == White) "■" else " ").join("")).join("\n");
+	}
+}
+
+private enum abstract Pixel(Int) from Int {
+	var Black;
+	var White;
+	var Transparent;
 }

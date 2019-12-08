@@ -129,5 +129,8 @@ class Tests implements ITest {
 	function testDay08() {
 		Assert.equals(1, Day08.validateImage("123456789012", 3, 2));
 		Assert.equals(1485, Day08.validateImage(getData("day08"), 25, 6));
+
+		Sys.println(Day08.decodeImage("0222112222120000", 2, 2) + "\n");
+		Sys.println(Day08.decodeImage(getData("day08"), 25, 6) + "\n");
 	}
 }
