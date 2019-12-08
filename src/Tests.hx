@@ -125,4 +125,9 @@ class Tests implements ITest {
 		Assert.equals(18216, Day07.findMaxThrusterSignal2(getData("day07-5")));
 		Assert.equals(61019896, Day07.findMaxThrusterSignal2(getData("day07-3")));
 	}
+
+	function testDay08() {
+		Assert.equals(1, Day08.validateImage("123456789012", 3, 2));
+		Assert.equals(1485, Day08.validateImage(getData("day08"), 25, 6));
+	}
 }
