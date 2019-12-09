@@ -1,11 +1,13 @@
 package days;
 
+using Std;
+
 class Day05 {
 	public static function parseProgram(input:String):Program {
-		return input.trim().split(",").map(Std.parseInt);
+		return input.trim().split(",").map(Std.parseFloat);
 	}
 
-	static function parseOperation(input:Int):Operation {
+	static function parseOperation(input:Float):Operation {
 		var digits = Std.string(input).lpad("0", 5).split("").map(Std.parseInt);
 		return {
 			modes: {
@@ -17,15 +19,25 @@ class Day05 {
 		};
 	}
 
-	public static function runIntcode(program:Program, inputs:Array<Int>, i = 0):Result {
+	public static function runIntcode(program:Program, ?inputs:Array<Float>, i = 0):Result {
+		if (inputs == null) {
+			inputs = [];
+		}
 		var outputs = [];
 		var memory = program;
-		function read(mode:ParameterMode):Int {
+		var relativeBase = 0;
+		function read(mode:ParameterMode):Float {
 			var value = memory[i++];
-			return if (mode == Position) memory[value] else value;
+			var result = switch mode {
+				case Position: memory[value.int()];
+				case Immediate: value;
+				case Relative: memory[(value + relativeBase).int()];
+			}
+			return if (result == null) 0 else result;
 		}
-		function write(value:Int) {
-			memory[memory[i++]] = value;
+		function write(value:Float, mode:ParameterMode) {
+			var offset = if (mode == Relative) relativeBase else 0;
+			memory[memory[i++].int() + offset] = value;
 		}
 		while (true) {
 			var op:Operation = parseOperation(memory[i++]);
@@ -33,7 +45,7 @@ class Day05 {
 				case Add | Multiply:
 					var a = read(op.modes.a);
 					var b = read(op.modes.b);
-					write(if (op.code == Add) a + b else a * b);
+					write(if (op.code == Add) a + b else a * b, op.modes.c);
 
 				case Input:
 					var input = if (inputs.length == 0) {
@@ -44,7 +56,7 @@ class Day05 {
 					} else {
 						inputs.shift();
 					}
-					write(input);
+					write(input, op.modes.a);
 
 				case Output:
 					outputs.push(read(op.modes.a));
@@ -53,21 +65,24 @@ class Day05 {
 					var a = read(op.modes.a);
 					var b = read(op.modes.b);
 					if (a != 0) {
-						i = b;
+						i = b.int();
 					}
 
 				case JumpIfFalse:
 					var a = read(op.modes.a);
 					var b = read(op.modes.b);
 					if (a == 0) {
-						i = b;
+						i = b.int();
 					}
 
 				case LessThan:
-					write(if (read(op.modes.a) < read(op.modes.b)) 1 else 0);
+					write(if (read(op.modes.a) < read(op.modes.b)) 1 else 0, op.modes.c);
 
 				case Equals:
-					write(if (read(op.modes.a) == read(op.modes.b)) 1 else 0);
+					write(if (read(op.modes.a) == read(op.modes.b)) 1 else 0, op.modes.c);
+
+				case OffsetRelativeBase:
+					relativeBase += read(op.modes.a).int();
 
 				case Finish:
 					return Finished(outputs.pop());
@@ -82,6 +97,7 @@ class Day05 {
 private enum abstract ParameterMode(Int) from Int {
 	var Position;
 	var Immediate;
+	var Relative;
 }
 
 private enum abstract Opcode(Int) from Int {
@@ -93,6 +109,7 @@ private enum abstract Opcode(Int) from Int {
 	var JumpIfFalse;
 	var LessThan;
 	var Equals;
+	var OffsetRelativeBase;
 	var Finish = 99;
 }
 
@@ -105,9 +122,9 @@ private typedef Operation = {
 	var code:Opcode;
 }
 
-typedef Program = Array<Int>;
+typedef Program = Array<Float>;
 
 enum Result {
-	Blocked(i:Int, output:Int);
-	Finished(output:Int);
+	Blocked(i:Int, output:Float);
+	Finished(output:Float);
 }

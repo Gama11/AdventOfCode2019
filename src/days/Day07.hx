@@ -2,6 +2,8 @@ package days;
 
 import days.Day05;
 
+using Std;
+
 class Day07 {
 	static function getPermutations(min:Int):Array<Array<Int>> {
 		var permutations = [];
@@ -37,7 +39,7 @@ class Day07 {
 		for (setting in settings) {
 			var result = Day05.runIntcode(program, [setting, signal]);
 			signal = switch result {
-				case Finished(output): output;
+				case Finished(output): output.int();
 				case Blocked(_): throw 'not enough input';
 			}
 		}
@@ -55,7 +57,7 @@ class Day07 {
 		var amplifier = 0;
 		var signal = 0;
 		while (true) {
-			var inputs = [signal];
+			var inputs:Array<Float> = [signal];
 			if (settings.length > 0) {
 				inputs.unshift(settings.shift());
 			}
@@ -64,13 +66,13 @@ class Day07 {
 			switch result {
 				case Blocked(i, output):
 					program.i = i;
-					signal = output;
+					signal = output.int();
 
 				case Finished(output):
 					if (amplifier == state.length - 1) {
-						return output;
+						return output.int();
 					} else {
-						signal = output;
+						signal = output.int();
 					}
 			}
 			amplifier++;
