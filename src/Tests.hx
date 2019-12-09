@@ -64,7 +64,6 @@ class Tests implements ITest {
 		Assert.equals(299, Day04.countValidPasswords(372037, 905157, true));
 	}
 
-	@Ignored
 	function testDay05() {
 		function runIntcode(program:String, inputs:Array<Float>):Float {
 			return switch Day05.runIntcode(Day05.parseProgram(program), inputs) {
@@ -116,7 +115,6 @@ class Tests implements ITest {
 		Assert.equals(322, Day06.countOrbitalTransfers(getData("day06-1")));
 	}
 
-	@Ignored
 	function testDay07() {
 		Assert.equals(43210, Day07.findMaxThrusterSignal(getData("day07-0")));
 		Assert.equals(54321, Day07.findMaxThrusterSignal(getData("day07-1")));
@@ -137,9 +135,11 @@ class Tests implements ITest {
 	}
 
 	function testDay09() {
-		Assert.equals(99, Day09.part1("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"));
-		Assert.equals(16, Std.string(Day09.part1("1102,34915192,34915192,7,4,7,99,0")).length);
-		Assert.equals(1125899906842624, Day09.part1("104,1125899906842624,99"));
-		Assert.equals(2682107844, Day09.part1(getData("day09"), [1]));
+		Assert.equals(99, Day09.run("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"));
+		Assert.equals(16, Std.string(Day09.run("1102,34915192,34915192,7,4,7,99,0")).length);
+		Assert.equals(1125899906842624, Day09.run("104,1125899906842624,99"));
+		Assert.equals(2682107844, Day09.run(getData("day09"), [1]));
+
+		Assert.equals(34738, Day09.run(getData("day09"), [2]));
 	}
 }
