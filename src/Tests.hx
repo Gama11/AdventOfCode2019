@@ -152,11 +152,15 @@ class Tests implements ITest {
 	}
 
 	function testDay10() {
-		Assert.equals(8, Day10.findMostAsteroidDetections(getData("day10-0")));
-		Assert.equals(33, Day10.findMostAsteroidDetections(getData("day10-1")));
-		Assert.equals(35, Day10.findMostAsteroidDetections(getData("day10-2")));
-		Assert.equals(41, Day10.findMostAsteroidDetections(getData("day10-3")));
-		Assert.equals(210, Day10.findMostAsteroidDetections(getData("day10-4")));
-		Assert.equals(344, Day10.findMostAsteroidDetections(getData("day10-5")));
+		var part1 = file -> Day10.findMonitoringStation(Day10.parse(getData(file))).value;
+		Assert.equals(8, part1("day10-0"));
+		Assert.equals(33, part1("day10-1"));
+		Assert.equals(35, part1("day10-2"));
+		Assert.equals(41, part1("day10-3"));
+		Assert.equals(210, part1("day10-4"));
+		Assert.equals(344, part1("day10-5"));
+
+		Assert.equals(802, Day10.findByVaporizationRank(getData("day10-4")));
+		Assert.equals(2732, Day10.findByVaporizationRank(getData("day10-5")));
 	}
 }
