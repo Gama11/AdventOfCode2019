@@ -19,13 +19,12 @@ class Day05 {
 		};
 	}
 
-	public static function runIntcode(program:Program, ?inputs:Array<Float>, i = 0):Result {
+	public static function runIntcode(program:Program, ?inputs:Array<Float>, i = 0, relativeBase = 0):Result {
 		if (inputs == null) {
 			inputs = [];
 		}
 		var outputs = [];
 		var memory = program;
-		var relativeBase = 0;
 		function read(mode:ParameterMode):Float {
 			var value = memory[i++];
 			var result = switch mode {
@@ -49,7 +48,7 @@ class Day05 {
 
 				case Input:
 					var input = if (inputs.length == 0) {
-						return Blocked(i - 1, outputs);
+						return Blocked(i - 1, outputs, relativeBase);
 					} else {
 						inputs.shift();
 					}
@@ -122,6 +121,6 @@ private typedef Operation = {
 typedef Program = Array<Float>;
 
 enum Result {
-	Blocked(i:Int, outputs:Array<Float>);
+	Blocked(i:Int, outputs:Array<Float>, relativeBase:Int);
 	Finished(outputs:Array<Float>);
 }

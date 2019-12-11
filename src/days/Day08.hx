@@ -47,7 +47,7 @@ class Day08 {
 				}
 			}
 		}
-		return image.map(row -> row.map(p -> if (p == White) "■" else " ").join("")).join("\n");
+		return image.map(row -> row.map(p -> if (p == White) "█" else " ").join("")).join("\n");
 	}
 }
 

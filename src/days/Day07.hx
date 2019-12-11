@@ -64,7 +64,7 @@ class Day07 {
 			var program = state[amplifier];
 			var result = Day05.runIntcode(program.memory, inputs, program.i);
 			switch result {
-				case Blocked(i, outputs):
+				case Blocked(i, outputs, _):
 					program.i = i;
 					signal = outputs[0].int();
 

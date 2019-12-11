@@ -36,12 +36,12 @@ class Util {
 		};
 	}
 
-	public static function renderPointGrid(points:Array<Point>, render:Point->String):String {
+	public static function renderPointGrid(points:Array<Point>, render:Point->String, empty = " "):String {
 		var bounds = findBounds(points);
 		var min = bounds.min;
 		var max = bounds.max;
 
-		var grid = [for (_ in 0...max.y - min.y + 1) [for (_ in 0...max.x - min.x + 1) "."]];
+		var grid = [for (_ in 0...max.y - min.y + 1) [for (_ in 0...max.x - min.x + 1) empty]];
 		for (pos in points) {
 			grid[pos.y - min.y][pos.x - min.x] = render(pos);
 		}
