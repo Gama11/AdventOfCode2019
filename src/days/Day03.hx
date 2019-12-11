@@ -1,7 +1,8 @@
 package days;
 
 import haxe.ds.HashMap;
-import Util.Movement.*;
+import Util.Direction;
+import Util.Direction.*;
 import Util.Point;
 
 class Day03 {
@@ -74,7 +75,7 @@ class Day03 {
 }
 
 private typedef Line = {
-	final direction:Point;
+	final direction:Direction;
 	final length:Int;
 }
 

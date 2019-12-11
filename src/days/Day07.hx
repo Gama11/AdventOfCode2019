@@ -39,7 +39,7 @@ class Day07 {
 		for (setting in settings) {
 			var result = Day05.runIntcode(program, [setting, signal]);
 			signal = switch result {
-				case Finished(output): output.int();
+				case Finished(outputs): outputs[0].int();
 				case Blocked(_): throw 'not enough input';
 			}
 		}
@@ -64,15 +64,15 @@ class Day07 {
 			var program = state[amplifier];
 			var result = Day05.runIntcode(program.memory, inputs, program.i);
 			switch result {
-				case Blocked(i, output):
+				case Blocked(i, outputs):
 					program.i = i;
-					signal = output.int();
+					signal = outputs[0].int();
 
-				case Finished(output):
+				case Finished(outputs):
 					if (amplifier == state.length - 1) {
-						return output.int();
+						return outputs[0].int();
 					} else {
-						signal = output.int();
+						signal = outputs[0].int();
 					}
 			}
 			amplifier++;

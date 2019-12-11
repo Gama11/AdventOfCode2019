@@ -49,10 +49,7 @@ class Day05 {
 
 				case Input:
 					var input = if (inputs.length == 0) {
-						if (outputs.length > 1) {
-							throw 'only one output expected, got $outputs';
-						}
-						return Blocked(i - 1, outputs[0]);
+						return Blocked(i - 1, outputs);
 					} else {
 						inputs.shift();
 					}
@@ -85,7 +82,7 @@ class Day05 {
 					relativeBase += read(op.modes.a).int();
 
 				case Finish:
-					return Finished(outputs.pop());
+					return Finished(outputs);
 
 				case code:
 					throw 'unknown opcode $code';
@@ -125,6 +122,6 @@ private typedef Operation = {
 typedef Program = Array<Float>;
 
 enum Result {
-	Blocked(i:Int, output:Float);
-	Finished(output:Float);
+	Blocked(i:Int, outputs:Array<Float>);
+	Finished(outputs:Array<Float>);
 }

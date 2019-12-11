@@ -170,9 +170,33 @@ class Point implements Hashable {
 	}
 }
 
-class Movement {
-	public static final Left = new Point(-1, 0);
-	public static final Up = new Point(0, -1);
-	public static final Down = new Point(0, 1);
-	public static final Right = new Point(1, 0);
+abstract Direction(Point) to Point {
+	public static final Left = new Direction(-1, 0);
+	public static final Up = new Direction(0, -1);
+	public static final Down = new Direction(0, 1);
+	public static final Right = new Direction(1, 0);
+
+	private function new(x:Int, y:Int) {
+		this = new Point(x, y);
+	}
+
+	private static final directions = [Left, Up, Right, Down];
+
+	public function rotate(by:Int):Direction {
+		var i = directions.indexOf((cast this : Direction)) + by;
+		while (i < 0) {
+			i += directions.length;
+		}
+		return directions[i % directions.length];
+	}
+
+	public function toString() {
+		return switch (this) {
+			case Left: "Left";
+			case Up: "Up";
+			case Down: "Down";
+			case Right: "Right";
+			case _: "unknown direction";
+		}
+	}
 }

@@ -71,7 +71,7 @@ class Tests implements ITest {
 	function testDay05() {
 		function runIntcode(program:String, inputs:Array<Float>):Float {
 			return switch Day05.runIntcode(Day05.parseProgram(program), inputs) {
-				case Finished(output): output;
+				case Finished(outputs): outputs[0];
 				case Blocked(_): throw 'not enough input';
 			}
 		}
@@ -162,5 +162,9 @@ class Tests implements ITest {
 
 		Assert.equals(802, Day10.findByVaporizationRank(getData("day10-4")));
 		Assert.equals(2732, Day10.findByVaporizationRank(getData("day10-5")));
+	}
+
+	function testDay11() {
+		Assert.equals(2255, Day11.countPaintedPanels(getData("day11")));
 	}
 }
