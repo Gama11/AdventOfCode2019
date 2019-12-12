@@ -14,6 +14,7 @@ class Tests implements ITest {
 		return sys.io.File.getContent('data/$name.txt').replace("\r", "");
 	}
 
+	@Ignored
 	function testDay01() {
 		Assert.equals(2, Day01.calculateFuelRequirement(12));
 		Assert.equals(2, Day01.calculateFuelRequirement(14));
@@ -27,6 +28,7 @@ class Tests implements ITest {
 		Assert.equals(4717699, Day01.sumFuelRequirements(getData("day01"), Day01.calculateTotalFuelRequirement));
 	}
 
+	@Ignored
 	function testDay02() {
 		Assert.equals(3500, Day02.runIntcode([1, 9, 10, 3, 2, 3, 11, 0, 99, 30, 40, 50]));
 		Assert.equals(2, Day02.runIntcode([1, 0, 0, 0, 99]));
@@ -37,6 +39,7 @@ class Tests implements ITest {
 		Assert.equals(5064, Day02.findInputForOutput(data, 19690720));
 	}
 
+	@Ignored
 	function testDay03() {
 		var part1 = file -> Day03.getDistanceToClosestIntersection(getData(file), Manhattan);
 		Assert.equals(6, part1("day03-0"));
@@ -51,6 +54,7 @@ class Tests implements ITest {
 		Assert.equals(65356, part2("day03-3"));
 	}
 
+	@Ignored
 	function testDay04() {
 		Assert.isTrue(Day04.meetsCritera(111111));
 		Assert.isFalse(Day04.meetsCritera(223450));
@@ -63,6 +67,7 @@ class Tests implements ITest {
 		Assert.equals(299, Day04.countValidPasswords(372037, 905157, true));
 	}
 
+	@Ignored
 	function testDay05() {
 		function runIntcode(program:String, inputs:Array<Float>):Float {
 			return switch Day05.runIntcode(Day05.parseProgram(program), inputs) {
@@ -106,6 +111,7 @@ class Tests implements ITest {
 		Assert.equals(8684145, runIntcode(getData("day05-0"), [5]));
 	}
 
+	@Ignored
 	function testDay06() {
 		Assert.equals(42, Day06.countOrbits(getData("day06-0")));
 		Assert.equals(119831, Day06.countOrbits(getData("day06-1")));
@@ -114,6 +120,7 @@ class Tests implements ITest {
 		Assert.equals(322, Day06.countOrbitalTransfers(getData("day06-1")));
 	}
 
+	@Ignored
 	function testDay07() {
 		Assert.equals(43210, Day07.findMaxThrusterSignal(getData("day07-0")));
 		Assert.equals(54321, Day07.findMaxThrusterSignal(getData("day07-1")));
@@ -125,6 +132,7 @@ class Tests implements ITest {
 		Assert.equals(61019896, Day07.findMaxThrusterSignal2(getData("day07-3")));
 	}
 
+	@Ignored
 	function testDay08() {
 		Assert.equals(1, Day08.validateImage("123456789012", 3, 2));
 		Assert.equals(1485, Day08.validateImage(getData("day08"), 25, 6));
@@ -133,6 +141,7 @@ class Tests implements ITest {
 		Sys.println(Day08.decodeImage(getData("day08"), 25, 6) + "\n");
 	}
 
+	@Ignored
 	function testDay09() {
 		Assert.equals(99, Day09.run("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99"));
 		Assert.equals(16, Std.string(Day09.run("1102,34915192,34915192,7,4,7,99,0")).length);
@@ -142,6 +151,7 @@ class Tests implements ITest {
 		Assert.equals(34738, Day09.run(getData("day09"), [2]));
 	}
 
+	@Ignored
 	function testDay10() {
 		var part1 = file -> Day10.findMonitoringStation(Day10.parse(getData(file))).value;
 		Assert.equals(8, part1("day10-0"));
@@ -155,8 +165,15 @@ class Tests implements ITest {
 		Assert.equals(2732, Day10.findByVaporizationRank(getData("day10-5")));
 	}
 
+	@Ignored
 	function testDay11() {
 		Assert.equals(2255, Day11.countPaintedPanels(getData("day11")));
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
+	}
+
+	function testDay12() {
+		Assert.equals(179, Day12.computeTotalEnergy(getData("day12-0"), 10));
+		Assert.equals(1940, Day12.computeTotalEnergy(getData("day12-1"), 100));
+		Assert.equals(7013, Day12.computeTotalEnergy(getData("day12-2"), 1000));
 	}
 }
