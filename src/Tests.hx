@@ -1,3 +1,4 @@
+import haxe.Int64;
 import days.*;
 import utest.ITest;
 import utest.Assert;
@@ -175,5 +176,9 @@ class Tests implements ITest {
 		Assert.equals(179, Day12.computeTotalEnergy(getData("day12-0"), 10));
 		Assert.equals(1940, Day12.computeTotalEnergy(getData("day12-1"), 100));
 		Assert.equals(7013, Day12.computeTotalEnergy(getData("day12-2"), 1000));
+
+		Assert.isTrue(Int64.parseString("2772") == Day12.findCycle(getData("day12-0")));
+		Assert.isTrue(Int64.parseString("4686774924") == Day12.findCycle(getData("day12-1")));
+		Assert.isTrue(Int64.parseString("324618307124784") == Day12.findCycle(getData("day12-2")));
 	}
 }

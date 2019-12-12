@@ -1,7 +1,13 @@
+import haxe.Int64;
 import polygonal.ds.Hashable;
 
 class Util {
 	public static function mod(a:Int, b:Int) {
+		var r = a % b;
+		return r < 0 ? r + b : r;
+	}
+
+	public static function mod64(a:Int64, b:Int64) {
 		var r = a % b;
 		return r < 0 ? r + b : r;
 	}
