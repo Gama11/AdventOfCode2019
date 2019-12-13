@@ -5,47 +5,37 @@ import Util.Direction.*;
 import haxe.ds.HashMap;
 
 class Day11 {
-	static function paint(input:String, initialColor:Color):Hull {
+	static function paint(program:String, initialColor:Color):Hull {
 		var hull = new Hull();
 		var position = new Point(0, 0);
 		hull.set(position, initialColor);
 		var facing = Up;
-		var memory = Day05.parseProgram(input);
-		var pointer = 0;
-		var relativeBase = 0;
+		var robot = new IntCodeVM(program);
 		while (true) {
 			var color = hull.get(position);
 			if (color == null) {
 				color = Black;
 			}
-			var result = Day05.runIntcode(memory, [color], pointer, relativeBase);
-			switch result {
-				case Blocked(i, outputs, base):
-					if (outputs.length != 2) {
-						throw 'two outputs expected, got ${outputs.length}';
-					}
-					pointer = i;
-					relativeBase = base;
-
-					var color = Std.int(outputs[0]);
-					hull.set(position, color);
-
-					var turn = Std.int(outputs[1]);
-					facing = facing.rotate(if (turn == CounterClockwise) -1 else 1);
-					position = position.add(facing);
-
-				case Finished(_):
-					return hull;
+			robot.write(color).run();
+			if (robot.finished) {
+				return hull;
 			}
+			var turn = robot.read().int();
+			facing = facing.rotate(if (turn == CounterClockwise) -1 else 1);
+
+			var color = robot.read().int();
+			hull.set(position, color);
+
+			position = position.add(facing);
 		}
 	}
 
-	public static function countPaintedPanels(input:String):Int {
-		return [for (panel in paint(input, Black).keys()) panel].length;
+	public static function countPaintedPanels(program:String):Int {
+		return [for (panel in paint(program, Black).keys()) panel].length;
 	}
 
-	public static function renderRegistrationIdentifier(input:String):String {
-		var hull = paint(input, White);
+	public static function renderRegistrationIdentifier(program:String):String {
+		var hull = paint(program, White);
 		return Util.renderPointGrid([for (p in hull.keys()) p], p -> if (hull.get(p) == White) "█" else " ");
 	}
 }

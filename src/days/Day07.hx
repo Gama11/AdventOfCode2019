@@ -1,9 +1,5 @@
 package days;
 
-import days.Day05;
-
-using Std;
-
 class Day07 {
 	static function getPermutations(min:Int):Array<Array<Int>> {
 		var permutations = [];
@@ -29,61 +25,40 @@ class Day07 {
 		return permutations;
 	}
 
-	public static function findMaxThrusterSignal(input:String):Int {
-		var program = Day05.parseProgram(input);
+	public static function findMaxThrusterSignal(program:String):Int {
 		return getPermutations(0).max(computeThrusterSignal.bind(program)).value;
 	}
 
-	static function computeThrusterSignal(program:Program, settings:Array<Int>):Int {
+	static function computeThrusterSignal(program:String, settings:Array<Int>):Int {
 		var signal = 0;
 		for (setting in settings) {
-			var result = Day05.runIntcode(program, [setting, signal]);
-			signal = switch result {
-				case Finished(outputs): outputs[0].int();
-				case Blocked(_): throw 'not enough input';
-			}
+			signal = new IntCodeVM(program).write(setting).write(signal).run().read().int();
 		}
 		return signal;
 	}
 
-	static function computeThrusterSignalLooped(program:Program, settings:Array<Int>):Int {
-		var state = [
-			for (_ in 0...5)
-				{
-					i: 0,
-					memory: program.copy()
-				}
-		];
-		var amplifier = 0;
+	static function computeThrusterSignalLooped(program:String, settings:Array<Int>):Int {
+		var amplifiers = [for (_ in 0...5) new IntCodeVM(program)];
+		var i = 0;
 		var signal = 0;
 		while (true) {
-			var inputs:Array<Float> = [signal];
+			var amplifier = amplifiers[i];
 			if (settings.length > 0) {
-				inputs.unshift(settings.shift());
+				amplifier.write(settings.shift());
 			}
-			var program = state[amplifier];
-			var result = Day05.runIntcode(program.memory, inputs, program.i);
-			switch result {
-				case Blocked(i, outputs, _):
-					program.i = i;
-					signal = outputs[0].int();
+			signal = amplifier.write(signal).run().read().int();
+			if (amplifier.finished && i == amplifiers.length - 1) {
+				return signal;
+			}
 
-				case Finished(outputs):
-					if (amplifier == state.length - 1) {
-						return outputs[0].int();
-					} else {
-						signal = outputs[0].int();
-					}
-			}
-			amplifier++;
-			if (amplifier >= state.length) {
-				amplifier = 0;
+			i++;
+			if (i >= amplifiers.length) {
+				i = 0;
 			}
 		}
 	}
 
-	public static function findMaxThrusterSignal2(input:String):Int {
-		var program = Day05.parseProgram(input);
+	public static function findMaxThrusterSignal2(program:String):Int {
 		return getPermutations(5).max(computeThrusterSignalLooped.bind(program)).value;
 	}
 }
