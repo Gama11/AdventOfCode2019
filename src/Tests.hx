@@ -1,8 +1,8 @@
-import haxe.Int64;
 import days.*;
 import utest.ITest;
 import utest.Assert;
 import utest.UTest;
+import haxe.Int64.parseString as int64;
 
 class Tests implements ITest {
 	static function main() {
@@ -29,7 +29,7 @@ class Tests implements ITest {
 	}
 
 	function specDay02() {
-		var run = code -> new IntCodeVM(code).run().memory[0].int();
+		var run = code -> new IntCodeVM(code).run().memory[0];
 		3500 == run("1,9,10,3,2,3,11,0,99,30,40,50");
 		2 == run("1,0,0,0,99");
 		30 == run("1,1,1,4,99,5,6,0,99");
@@ -130,8 +130,8 @@ class Tests implements ITest {
 	function specDay09() {
 		99 == Day09.run("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99");
 		16 == Std.string(Day09.run("1102,34915192,34915192,7,4,7,99,0")).length;
-		1125899906842624 == Day09.run("104,1125899906842624,99");
-		2682107844 == Day09.run(getData("day09"), 1);
+		int64("1125899906842624") == Day09.run("104,1125899906842624,99");
+		int64("2682107844") == Day09.run(getData("day09"), 1);
 
 		34738 == Day09.run(getData("day09"), 2);
 	}
@@ -159,9 +159,9 @@ class Tests implements ITest {
 		1940 == Day12.computeTotalEnergy(getData("day12-1"), 100);
 		7013 == Day12.computeTotalEnergy(getData("day12-2"), 1000);
 
-		Int64.parseString("2772") == Day12.findCycle(getData("day12-0"));
-		Int64.parseString("4686774924") == Day12.findCycle(getData("day12-1"));
-		Int64.parseString("324618307124784") == Day12.findCycle(getData("day12-2"));
+		int64("2772") == Day12.findCycle(getData("day12-0"));
+		int64("4686774924") == Day12.findCycle(getData("day12-1"));
+		int64("324618307124784") == Day12.findCycle(getData("day12-2"));
 	}
 
 	function specDay13() {

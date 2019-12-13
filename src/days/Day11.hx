@@ -20,10 +20,10 @@ class Day11 {
 			if (robot.finished) {
 				return hull;
 			}
-			var turn = robot.read().int();
+			var turn = robot.read().toInt();
 			facing = facing.rotate(if (turn == CounterClockwise) -1 else 1);
 
-			var color = robot.read().int();
+			var color = robot.read().toInt();
 			hull.set(position, color);
 
 			position = position.add(facing);

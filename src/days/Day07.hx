@@ -32,7 +32,7 @@ class Day07 {
 	static function computeThrusterSignal(program:String, settings:Array<Int>):Int {
 		var signal = 0;
 		for (setting in settings) {
-			signal = new IntCodeVM(program).write(setting).write(signal).run().read().int();
+			signal = new IntCodeVM(program).write(setting).write(signal).run().read().toInt();
 		}
 		return signal;
 	}
@@ -46,7 +46,7 @@ class Day07 {
 			if (settings.length > 0) {
 				amplifier.write(settings.shift());
 			}
-			signal = amplifier.write(signal).run().read().int();
+			signal = amplifier.write(signal).run().read().toInt();
 			if (amplifier.finished && i == amplifiers.length - 1) {
 				return signal;
 			}

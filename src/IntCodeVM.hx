@@ -1,18 +1,18 @@
 class IntCodeVM {
-	final inputs:Array<Float> = [];
-	final outputs:Array<Float> = [];
+	final inputs:Array<Int64> = [];
+	final outputs:Array<Int64> = [];
 
 	var pointer:Int = 0;
 	var relativeBase:Int = 0;
 
-	public final memory:Array<Float>;
+	public final memory:Array<Int64>;
 	public var finished(default, null) = false;
 
 	public function new(program:String) {
-		memory = program.trim().split(",").map(Std.parseFloat);
+		memory = program.trim().split(",").map(Int64.parseString);
 	}
 
-	static function parseOperation(input:Float):Operation {
+	static function parseOperation(input:Int64):Operation {
 		var digits = Std.string(input).lpad("0", 5).split("").map(Std.parseInt);
 		return {
 			modes: {
@@ -24,12 +24,12 @@ class IntCodeVM {
 		};
 	}
 
-	public function write(input:Float) {
+	public function write(input:Int64) {
 		inputs.push(input);
 		return this;
 	}
 
-	public function read():Null<Float> {
+	public function read():Null<Int64> {
 		return outputs.pop();
 	}
 
@@ -38,18 +38,18 @@ class IntCodeVM {
 	}
 
 	public function run() {
-		function read(mode:ParameterMode):Float {
+		function read(mode:ParameterMode):Int64 {
 			var value = memory[pointer++];
 			var result = switch mode {
-				case Position: memory[value.int()];
+				case Position: memory[value.toInt()];
 				case Immediate: value;
-				case Relative: memory[(value + relativeBase).int()];
+				case Relative: memory[(value + relativeBase).toInt()];
 			}
 			return if (result == null) 0 else result;
 		}
-		function write(value:Float, mode:ParameterMode) {
+		function write(value:Int64, mode:ParameterMode) {
 			var offset = if (mode == Relative) relativeBase else 0;
-			memory[memory[pointer++].int() + offset] = value;
+			memory[memory[pointer++].toInt() + offset] = value;
 		}
 		while (true) {
 			var op:Operation = parseOperation(memory[pointer++]);
@@ -75,14 +75,14 @@ class IntCodeVM {
 					var a = read(op.modes.a);
 					var b = read(op.modes.b);
 					if (a != 0) {
-						pointer = b.int();
+						pointer = b.toInt();
 					}
 
 				case JumpIfFalse:
 					var a = read(op.modes.a);
 					var b = read(op.modes.b);
 					if (a == 0) {
-						pointer = b.int();
+						pointer = b.toInt();
 					}
 
 				case LessThan:
@@ -92,7 +92,7 @@ class IntCodeVM {
 					write(if (read(op.modes.a) == read(op.modes.b)) 1 else 0, op.modes.c);
 
 				case OffsetRelativeBase:
-					relativeBase += read(op.modes.a).int();
+					relativeBase += read(op.modes.a).toInt();
 
 				case Finish:
 					finished = true;
