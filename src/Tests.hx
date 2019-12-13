@@ -65,8 +65,13 @@ class Tests implements ITest {
 	}
 
 	function specDay05() {
-		Day05.runIntcode("1002,4,3,4,33");
-		14155342 == Day05.runIntcode(getData("day05-0"), 1);
+		false == new IntCodeVM("1002,4,3,4,33").run().hasOutput();
+		var vm = new IntCodeVM(getData("day05-0")).write(1).run();
+		var lastOutput:Int64 = 0;
+		while (vm.hasOutput()) {
+			lastOutput = vm.read();
+		}
+		14155342 == lastOutput;
 
 		var equalsEightA = n -> Day05.runIntcode("3,9,8,9,10,9,4,9,99,-1,8", n);
 		1 == equalsEightA(8);
@@ -128,7 +133,7 @@ class Tests implements ITest {
 	}
 
 	function specDay09() {
-		99 == Day09.run("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99");
+		109 == Day09.run("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99");
 		16 == Std.string(Day09.run("1102,34915192,34915192,7,4,7,99,0")).length;
 		int64("1125899906842624") == Day09.run("104,1125899906842624,99");
 		int64("2682107844") == Day09.run(getData("day09"), 1);

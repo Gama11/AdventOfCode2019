@@ -30,7 +30,7 @@ class IntCodeVM {
 	}
 
 	public function read():Null<Int64> {
-		return outputs.pop();
+		return outputs.shift();
 	}
 
 	public function hasOutput():Bool {

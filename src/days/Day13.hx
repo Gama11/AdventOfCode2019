@@ -7,9 +7,9 @@ class Day13 {
 	static function update(screen:Screen, game:IntCodeVM) {
 		game.run();
 		while (game.hasOutput()) {
-			var tile = game.read().toInt();
-			var y = game.read().toInt();
 			var x = game.read().toInt();
+			var y = game.read().toInt();
+			var tile = game.read().toInt();
 			screen.set(new Point(x, y), tile);
 		}
 	}
