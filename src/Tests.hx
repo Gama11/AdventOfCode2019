@@ -170,4 +170,8 @@ class Tests implements ITest {
 		Assert.isTrue(Int64.parseString("4686774924") == Day12.findCycle(getData("day12-1")));
 		Assert.isTrue(Int64.parseString("324618307124784") == Day12.findCycle(getData("day12-2")));
 	}
+
+	function testDay13() {
+		Assert.equals(324, Day13.countBlocks(getData("day13")));
+	}
 }

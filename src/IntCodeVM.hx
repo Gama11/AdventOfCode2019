@@ -33,6 +33,10 @@ class IntCodeVM {
 		return outputs.pop();
 	}
 
+	public function hasOutput():Bool {
+		return outputs.length > 0;
+	}
+
 	public function run() {
 		function read(mode:ParameterMode):Float {
 			var value = memory[pointer++];
