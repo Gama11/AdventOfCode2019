@@ -173,5 +173,6 @@ class Tests implements ITest {
 
 	function testDay13() {
 		Assert.equals(324, Day13.countBlocks(getData("day13")));
+		Assert.equals(15957, Day13.beatGame(getData("day13")));
 	}
 }

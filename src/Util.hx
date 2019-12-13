@@ -125,6 +125,10 @@ class Point implements Hashable {
 		return new Point(x + point.x, y + point.y);
 	}
 
+	public inline function subtract(point:Point):Point {
+		return new Point(x - point.x, y - point.y);
+	}
+
 	public inline function scale(n:Int):Point {
 		return new Point(x * n, y * n);
 	}
