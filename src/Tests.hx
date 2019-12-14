@@ -15,6 +15,7 @@ class Tests implements ITest {
 		return sys.io.File.getContent('data/$name.txt').replace("\r", "");
 	}
 
+	@Ignored
 	function specDay01() {
 		2 == Day01.calculateFuelRequirement(12);
 		2 == Day01.calculateFuelRequirement(14);
@@ -28,6 +29,7 @@ class Tests implements ITest {
 		4717699 == Day01.sumFuelRequirements(getData("day01"), Day01.calculateTotalFuelRequirement);
 	}
 
+	@Ignored
 	function specDay02() {
 		var run = code -> new IntCodeVM(code).run().memory[0];
 		3500 == run("1,9,10,3,2,3,11,0,99,30,40,50");
@@ -38,6 +40,7 @@ class Tests implements ITest {
 		5064 == Day02.findInputForOutput(getData("day02"), 19690720);
 	}
 
+	@Ignored
 	function specDay03() {
 		var part1 = file -> Day03.getDistanceToClosestIntersection(getData(file), Manhattan);
 		6 == part1("day03-0");
@@ -52,6 +55,7 @@ class Tests implements ITest {
 		65356 == part2("day03-3");
 	}
 
+	@Ignored
 	function specDay04() {
 		true == Day04.meetsCritera(111111);
 		false == Day04.meetsCritera(223450);
@@ -64,6 +68,7 @@ class Tests implements ITest {
 		299 == Day04.countValidPasswords(372037, 905157, true);
 	}
 
+	@Ignored
 	function specDay05() {
 		false == new IntCodeVM("1002,4,3,4,33").run().hasOutput();
 		var vm = new IntCodeVM(getData("day05-0")).write(1).run();
@@ -105,6 +110,7 @@ class Tests implements ITest {
 		8684145 == Day05.runIntcode(getData("day05-0"), 5);
 	}
 
+	@Ignored
 	function specDay06() {
 		42 == Day06.countOrbits(getData("day06-0"));
 		119831 == Day06.countOrbits(getData("day06-1"));
@@ -113,6 +119,7 @@ class Tests implements ITest {
 		322 == Day06.countOrbitalTransfers(getData("day06-1"));
 	}
 
+	@Ignored
 	function specDay07() {
 		43210 == Day07.findMaxThrusterSignal(getData("day07-0"));
 		54321 == Day07.findMaxThrusterSignal(getData("day07-1"));
@@ -124,6 +131,7 @@ class Tests implements ITest {
 		61019896 == Day07.findMaxThrusterSignal2(getData("day07-3"));
 	}
 
+	@Ignored
 	function specDay08() {
 		1 == Day08.validateImage("123456789012", 3, 2);
 		1485 == Day08.validateImage(getData("day08"), 25, 6);
@@ -132,6 +140,7 @@ class Tests implements ITest {
 		Sys.println(Day08.decodeImage(getData("day08"), 25, 6) + "\n");
 	}
 
+	@Ignored
 	function specDay09() {
 		109 == Day09.run("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99");
 		16 == Std.string(Day09.run("1102,34915192,34915192,7,4,7,99,0")).length;
@@ -141,6 +150,7 @@ class Tests implements ITest {
 		34738 == Day09.run(getData("day09"), 2);
 	}
 
+	@Ignored
 	function specDay10() {
 		var part1 = file -> Day10.findMonitoringStation(Day10.parse(getData(file))).value;
 		8 == part1("day10-0");
@@ -154,11 +164,13 @@ class Tests implements ITest {
 		2732 == Day10.findByVaporizationRank(getData("day10-5"));
 	}
 
+	@Ignored
 	function specDay11() {
 		2255 == Day11.countPaintedPanels(getData("day11"));
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
 	}
 
+	@Ignored
 	function specDay12() {
 		179 == Day12.computeTotalEnergy(getData("day12-0"), 10);
 		1940 == Day12.computeTotalEnergy(getData("day12-1"), 100);
@@ -169,8 +181,18 @@ class Tests implements ITest {
 		int64("324618307124784") == Day12.findCycle(getData("day12-2"));
 	}
 
+	@Ignored
 	function specDay13() {
 		324 == Day13.countBlocks(getData("day13"));
 		15957 == Day13.beatGame(getData("day13"));
+	}
+
+	function specDay14() {
+		31 == Day14.calculateFuelCost(getData("day14-0"));
+		165 == Day14.calculateFuelCost(getData("day14-1"));
+		13312 == Day14.calculateFuelCost(getData("day14-2"));
+		180697 == Day14.calculateFuelCost(getData("day14-3"));
+		2210736 == Day14.calculateFuelCost(getData("day14-4"));
+		431448 == Day14.calculateFuelCost(getData("day14-5"));
 	}
 }
