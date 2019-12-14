@@ -194,5 +194,7 @@ class Tests implements ITest {
 		180697 == Day14.calculateFuelCost(getData("day14-3"));
 		2210736 == Day14.calculateFuelCost(getData("day14-4"));
 		431448 == Day14.calculateFuelCost(getData("day14-5"));
+
+		3279311 == Day14.findMaxFuelProduction(getData("day14-5"));
 	}
 }

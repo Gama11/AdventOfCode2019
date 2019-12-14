@@ -22,9 +22,11 @@ class Day14 {
 		return reactions;
 	}
 
-	public static function calculateFuelCost(input:String):Int {
+	public static function calculateFuelCost(input:String, quantity:Int = 1, ?leftovers:Map<String, Int>):Int {
 		var reactions = parse(input);
-		var leftovers = new Map<String, Int>();
+		if (leftovers == null) {
+			leftovers = new Map<String, Int>();
+		}
 		function produce(required:Chemical):Int {
 			var quantity = leftovers[required.name];
 			if (quantity == null) {
@@ -52,7 +54,23 @@ class Day14 {
 			leftovers[required.name] = quantity - required.quantity;
 			return cost;
 		}
-		return produce({name: "FUEL", quantity: 1});
+		return produce({name: "FUEL", quantity: quantity});
+	}
+
+	public static function findMaxFuelProduction(input:String):Int {
+		var singleCost = calculateFuelCost(input);
+		var ore = 1000000000000;
+		var fuel = 0;
+		var leftovers = new Map<String, Int>();
+		while (true) {
+			var producableFuel = Std.int(Math.max(1, Std.int(ore / singleCost)));
+			var cost = calculateFuelCost(input, producableFuel, leftovers);
+			ore -= cost;
+			if (ore < 0) {
+				return fuel;
+			}
+			fuel += producableFuel;
+		}
 	}
 }
 
