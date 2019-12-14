@@ -36,17 +36,19 @@ class Day14 {
 			}
 
 			var reaction = reactions[required.name];
-			function apply() {
+			function apply(times:Int) {
 				if (reaction.inputs[0].name == "ORE") {
-					return reaction.inputs[0].quantity;
+					return reaction.inputs[0].quantity * times;
 				}
-				return reaction.inputs.map(required -> produce(required)).sum();
+				return reaction.inputs.map(required -> produce({
+					name: required.name,
+					quantity: required.quantity * times
+				})).sum();
 			}
 			var cost = 0;
-			while (quantity < required.quantity) {
-				cost += apply();
-				quantity += reaction.output.quantity;
-			}
+			var requiredApplications = Std.int(Math.ceil((required.quantity - quantity) / reaction.output.quantity));
+			cost += apply(requiredApplications);
+			quantity += reaction.output.quantity * requiredApplications;
 			leftovers[required.name] = quantity - required.quantity;
 			return cost;
 		}
