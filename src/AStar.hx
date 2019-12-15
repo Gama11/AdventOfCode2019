@@ -3,7 +3,7 @@ import polygonal.ds.PriorityQueue;
 import Util.PrioritizedItem;
 
 class AStar {
-	public static function search<T:State>(start:T, score:T->Int, getMoves:T->Array<Move<T>>):Null<Int> {
+	public static function search<T:State>(start:T, isGoal:T->Bool, score:T->Int, getMoves:T->Array<Move<T>>):Null<Int> {
 		var scores = new HashMap<T, Score>();
 		scores.set(start, {
 			g: 0,
@@ -17,7 +17,7 @@ class AStar {
 			closedSet.set(current, true);
 
 			var currentScore = scores.get(current).g;
-			if (current.isGoal()) {
+			if (isGoal(current)) {
 				return currentScore;
 			}
 
@@ -49,7 +49,6 @@ typedef Move<T> = {
 
 typedef State = {
 	function hashCode():Int;
-	function isGoal():Bool;
 }
 
 private typedef Score = {

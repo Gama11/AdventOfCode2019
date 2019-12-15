@@ -200,5 +200,6 @@ class Tests implements ITest {
 
 	function specDay15() {
 		294 == Day15.findShortestPath(getData("day15"));
+		388 == Day15.fillWithOxygen(getData("day15"));
 	}
 }

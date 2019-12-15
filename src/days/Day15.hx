@@ -6,10 +6,10 @@ import Util.Point;
 import haxe.ds.HashMap;
 
 class Day15 {
-	public static function findShortestPath(input:String):Int {
-		var ship = new HashMap<Point, Status>();
+	static function explore(input:String, isGoal:State->Bool) {
+		var ship = new Ship();
 		var start = new State(new Point(0, 0), Empty, new IntCodeVM(input));
-		return AStar.search(start, s -> 0, function(state) {
+		var shortestDistance = AStar.search(start, isGoal, s -> 0, function(state) {
 			var moves = [];
 			function explore(direction:Direction) {
 				var pos = state.pos.add(direction);
@@ -38,6 +38,41 @@ class Day15 {
 			}
 			return moves;
 		});
+		return {
+			shortestDistance: shortestDistance,
+			ship: ship
+		};
+	}
+
+	static function render(ship:Ship):String {
+		return Util.renderPointGrid([for (p in ship.keys()) p], p -> switch (ship.get(p)) {
+			case Empty: " ";
+			case Wall: "#";
+			case OxygenSystem: "O";
+		});
+	}
+
+	public static function findShortestPath(input:String):Int {
+		return explore(input, s -> s.status == OxygenSystem).shortestDistance;
+	}
+
+	public static function fillWithOxygen(input:String):Int {
+		var oxygenSystem:Point;
+		var ship = explore(input, function(state) {
+			if (state.status == OxygenSystem) {
+				oxygenSystem = state.pos;
+			}
+			return false;
+		}).ship;
+		function fill(pos:Point, time:Int):Int {
+			var status = ship.get(pos);
+			if (status == Wall) {
+				return time;
+			}
+			ship.set(pos, Wall);
+			return Direction.directions.max(direction -> fill(pos.add(direction), time + 1)).value;
+		}
+		return fill(oxygenSystem, -1);
 	}
 }
 
@@ -68,8 +103,6 @@ private class State {
 	public function hashCode():Int {
 		return pos.hashCode();
 	}
-
-	public function isGoal():Bool {
-		return status == OxygenSystem;
-	}
 }
+
+private typedef Ship = HashMap<Point, Status>;
