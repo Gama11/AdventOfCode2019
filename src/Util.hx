@@ -1,3 +1,4 @@
+import polygonal.ds.Prioritizable;
 import haxe.Int64;
 import polygonal.ds.Hashable;
 
@@ -190,7 +191,7 @@ abstract Direction(Point) to Point {
 		this = new Point(x, y);
 	}
 
-	private static final directions = [Left, Up, Right, Down];
+	public static final directions = [Left, Up, Right, Down];
 
 	public function rotate(by:Int):Direction {
 		var i = directions.indexOf((cast this : Direction)) + by;
@@ -205,5 +206,16 @@ abstract Direction(Point) to Point {
 			case Right: "Right";
 			case _: "unknown direction";
 		}
+	}
+}
+
+class PrioritizedItem<T> implements Prioritizable {
+	public final item:T;
+	public var priority(default, null):Float = 0;
+	public var position(default, null):Int;
+
+	public function new(item:T, priority:Float) {
+		this.item = item;
+		this.priority = priority;
 	}
 }

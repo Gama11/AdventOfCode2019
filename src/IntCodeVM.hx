@@ -1,11 +1,11 @@
 class IntCodeVM {
-	final inputs:Array<Int64> = [];
-	final outputs:Array<Int64> = [];
+	var inputs:Array<Int64> = [];
+	var outputs:Array<Int64> = [];
 
 	var pointer:Int = 0;
 	var relativeBase:Int = 0;
 
-	public final memory:Array<Int64>;
+	public var memory(default, null):Array<Int64>;
 	public var finished(default, null) = false;
 
 	public function new(program:String) {
@@ -102,6 +102,17 @@ class IntCodeVM {
 					throw 'unknown opcode $code';
 			}
 		}
+	}
+
+	public function copy():IntCodeVM {
+		var copy = Type.createEmptyInstance(IntCodeVM);
+		copy.inputs = inputs.copy();
+		copy.outputs = outputs.copy();
+		copy.pointer = pointer;
+		copy.relativeBase = relativeBase;
+		copy.memory = memory.copy();
+		copy.finished = finished;
+		return copy;
 	}
 }
 

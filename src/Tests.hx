@@ -197,4 +197,8 @@ class Tests implements ITest {
 
 		3279311 == Day14.findMaxFuelProduction(getData("day14-5"));
 	}
+
+	function specDay15() {
+		294 == Day15.findShortestPath(getData("day15"));
+	}
 }
