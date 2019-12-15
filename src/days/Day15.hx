@@ -45,7 +45,7 @@ class Day15 {
 	}
 
 	static function render(ship:Ship):String {
-		return Util.renderPointGrid([for (p in ship.keys()) p], p -> switch (ship.get(p)) {
+		return Util.renderPointHash(ship, s -> switch s {
 			case Empty: " ";
 			case Wall: "#";
 			case OxygenSystem: "O";

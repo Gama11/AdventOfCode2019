@@ -34,8 +34,7 @@ class Day11 {
 	}
 
 	public static function renderRegistrationIdentifier(program:String):String {
-		var hull = paint(program, White);
-		return Util.renderPointGrid([for (p in hull.keys()) p], p -> if (hull.get(p) == White) "█" else " ");
+		return Util.renderPointHash(paint(program, White), color -> if (color == White) "█" else " ");
 	}
 }
 

@@ -1,3 +1,4 @@
+import haxe.ds.HashMap;
 import polygonal.ds.Prioritizable;
 import haxe.Int64;
 import polygonal.ds.Hashable;
@@ -41,6 +42,10 @@ class Util {
 			grid[pos.y - min.y][pos.x - min.x] = render(pos);
 		}
 		return grid.map(row -> row.join("")).join("\n") + "\n";
+	}
+
+	public static function renderPointHash<T>(map:HashMap<Point, T>, render:T->String, empty = " "):String {
+		return renderPointGrid([for (p in map.keys()) p], p -> render(map.get(p)), empty);
 	}
 }
 

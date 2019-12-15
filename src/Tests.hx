@@ -164,7 +164,6 @@ class Tests implements ITest {
 		2732 == Day10.findByVaporizationRank(getData("day10-5"));
 	}
 
-	@Ignored
 	function specDay11() {
 		2255 == Day11.countPaintedPanels(getData("day11"));
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
@@ -181,7 +180,6 @@ class Tests implements ITest {
 		int64("324618307124784") == Day12.findCycle(getData("day12-2"));
 	}
 
-	@Ignored
 	function specDay13() {
 		324 == Day13.countBlocks(getData("day13"));
 		15957 == Day13.beatGame(getData("day13"));

@@ -15,14 +15,12 @@ class Day13 {
 	}
 
 	static function render(screen:Screen) {
-		return Util.renderPointGrid([for (pos in screen.keys()) pos], function(pos) {
-			return switch screen.get(pos) {
-				case Empty: " ";
-				case Wall: "█";
-				case Block: "▄";
-				case Paddle: "_";
-				case Ball: "o";
-			}
+		return Util.renderPointHash(screen, tile -> switch tile {
+			case Empty: " ";
+			case Wall: "█";
+			case Block: "▄";
+			case Paddle: "_";
+			case Ball: "o";
 		});
 	}
 
