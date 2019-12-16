@@ -18,4 +18,27 @@ class Day16 {
 		}
 		return [for (i in 0...8) signal[i]].join("");
 	}
+
+	public static function performFFS(input:String) {
+		var offset = Std.parseInt(input.substr(0, 7));
+		var signal = input.split("").map(Std.parseInt);
+		var relevantRange = signal.length * 10000 - offset;
+
+		var input = [];
+		for (i in 0...relevantRange) {
+			input.push(signal[(offset + i) % signal.length]);
+		}
+
+		for (_ in 0...100) {
+			var output = [];
+			var acc = 0;
+			var i = input.length;
+			while (i-- > 0) {
+				acc += input[i];
+				output[i] = acc % 10;
+			}
+			input = output;
+		}
+		return [for (i in 0...8) input[i]].join("");
+	}
 }
