@@ -180,11 +180,13 @@ class Tests implements ITest {
 		int64("324618307124784") == Day12.findCycle(getData("day12-2"));
 	}
 
+	@Ignored
 	function specDay13() {
 		324 == Day13.countBlocks(getData("day13"));
 		15957 == Day13.beatGame(getData("day13"));
 	}
 
+	@Ignored
 	function specDay14() {
 		31 == Day14.calculateFuelCost(getData("day14-0"));
 		165 == Day14.calculateFuelCost(getData("day14-1"));
@@ -196,8 +198,17 @@ class Tests implements ITest {
 		3279311 == Day14.findMaxFuelProduction(getData("day14-5"));
 	}
 
+	@Ignored
 	function specDay15() {
 		294 == Day15.findShortestPath(getData("day15"));
 		388 == Day15.fillWithOxygen(getData("day15"));
+	}
+
+	function specDay16() {
+		"01029498" == Day16.performFFT("12345678", 4);
+		"24176176" == Day16.performFFT("80871224585914546619083218645595", 100);
+		"73745418" == Day16.performFFT("19617804207202209144916044189917", 100);
+		"52432133" == Day16.performFFT("69317163492948606335995924319873", 100);
+		"61149209" == Day16.performFFT(getData("day16"), 100);
 	}
 }
