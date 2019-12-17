@@ -221,5 +221,7 @@ class Tests implements ITest {
 	function specDay17() {
 		76 == Day17.calculateAlignmentParameterSum(getData("day17-0"));
 		5940 == Day17.calibrateCameras(getData("day17-1"));
+
+		923795 == Day17.warnRobots(getData("day17-1"));
 	}
 }
