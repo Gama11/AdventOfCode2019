@@ -204,6 +204,7 @@ class Tests implements ITest {
 		388 == Day15.fillWithOxygen(getData("day15"));
 	}
 
+	@Ignored
 	function specDay16() {
 		"01029498" == Day16.performFFT("12345678", 4);
 		"24176176" == Day16.performFFT("80871224585914546619083218645595", 100);
@@ -215,5 +216,10 @@ class Tests implements ITest {
 		"78725270" == Day16.performFFS("02935109699940807407585447034323");
 		"53553731" == Day16.performFFS("03081770884921959731165446850517");
 		"16178430" == Day16.performFFS(getData("day16"));
+	}
+
+	function specDay17() {
+		76 == Day17.calculateAlignmentParameterSum(getData("day17-0"));
+		5940 == Day17.calibrateCameras(getData("day17-1"));
 	}
 }
