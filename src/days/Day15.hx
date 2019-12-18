@@ -37,7 +37,7 @@ class Day15 {
 				explore(direction);
 			}
 			return moves;
-		});
+		}).score;
 		return {
 			shortestDistance: shortestDistance,
 			ship: ship

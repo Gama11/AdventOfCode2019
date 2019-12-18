@@ -6,9 +6,9 @@ import Util.Point;
 
 class Day18 {
 	public static function findShortestPath(input:String):Int {
-		var startingPos = null;
+		var entrances = [];
 		var keyCount = 0;
-		var keyIndices = new Map<Tile, Int>();
+		var keyData = new Map<Tile, {index:Int, pos:Point}>();
 		var grid = input.split("\n").map(line -> line.split(""));
 		var maze = new HashMap<Point, Tile>();
 		for (y in 0...grid.length) {
@@ -16,78 +16,140 @@ class Day18 {
 				var pos = new Point(x, y);
 				var tile:Tile = grid[y][x];
 				if (tile == Entrance) {
-					startingPos = pos;
+					entrances.push(pos);
 					tile = Empty;
 				}
 				if (tile.isKey()) {
-					keyIndices.set(tile, keyCount++);
+					keyData.set(tile, {index: keyCount++, pos: pos});
 				}
 				maze.set(pos, tile);
 			}
 		}
 
-		function isLocked(keys:Int, door:Tile):Bool {
-			return (keys & (1 << keyIndices[door.toLowerCase()])) == 0;
+		function isBlocked(doors:Int, keys:Int):Bool {
+			return (doors & keys) != doors;
 		}
-		function unlock(keys:Int, key:Tile):Int {
-			return keys | 1 << keyIndices[key];
+		function setBit(field:Int, key:Tile):Int {
+			return field | 1 << keyData[key].index;
 		}
 		final maxKeys = Std.int(Math.pow(2, keyCount) - 1);
 
-		return AStar.search(new State(startingPos, 0), s -> s.keys == maxKeys, s -> keyCount - Util.bitCount(s.keys), function(state) {
-			var moves = [];
-			function explore(direction:Direction) {
-				var pos = state.pos.add(direction);
-				var tile = maze.get(pos);
-				if (tile == Wall) {
-					return;
-				}
-				var keys = state.keys;
-				if (tile != Empty) {
-					if (tile.isDoor() && isLocked(keys, tile)) {
-						return;
-					} else if (tile.isKey()) {
-						keys = unlock(keys, tile);
-					}
-				}
-				moves.push({
-					cost: 1,
-					state: new State(pos, keys)
-				});
+		function findPath(from:Tile, to:Tile) {
+			var start = null;
+			var key = keyData[from];
+			if (key == null) {
+				start = entrances[Std.parseInt(from)];
+			} else {
+				start = key.pos;
 			}
-			for (direction in Direction.directions) {
-				explore(direction);
+			var goal = keyData[to].pos;
+			return AStar.search(new PruneState(start, 0), s -> s.pos.equals(goal), s -> s.pos.distanceTo(goal), function(state) {
+				var moves = [];
+				function explore(direction:Direction) {
+					var newPos = state.pos.add(direction);
+					var tile = maze.get(newPos);
+					if (tile == Wall) {
+						return;
+					}
+					var doors = state.doors;
+					if (tile.isDoor()) {
+						doors = setBit(doors, tile.toLowerCase());
+					}
+					moves.push({
+						cost: 1,
+						state: new PruneState(newPos, doors)
+					});
+				}
+				for (direction in Direction.directions) {
+					explore(direction);
+				}
+				return moves;
+			});
+		}
+
+		var paths = new Map<Tile, Map<Tile, {distance:Int, doors:Int}>>();
+		var entranceIDs = [for (i in 0...entrances.length) Std.string(i)];
+		var origins = entranceIDs.concat([for (key in keyData.keys()) key]);
+		for (a in origins) {
+			paths[a] = new Map();
+			for (b in keyData.keys()) {
+				if (a == b) {
+					continue;
+				}
+				var path = findPath(a, b);
+				if (path != null) {
+					paths[a][b] = {distance: path.score, doors: path.state.doors};
+				}
+			}
+		}
+
+		return AStar.search(new SearchState(entranceIDs, 0), s -> s.keys == maxKeys, s -> (keyCount - Util.bitCount(s.keys)), function(state) {
+			var moves = [];
+			for (i in 0...state.positions.length) {
+				var pos = state.positions[i];
+				for (key in paths[pos].keys()) {
+					var target = paths[pos][key];
+					if (isBlocked(target.doors, state.keys)) {
+						continue;
+					}
+					var positions = state.positions.copy();
+					positions[i] = key;
+					var keys = setBit(state.keys, key);
+					moves.push({
+						cost: target.distance,
+						state: new SearchState(positions, keys)
+					});
+				}
 			}
 			return moves;
-		});
+		}).score;
 	}
 }
 
-private class State {
+private class PruneState {
 	public final pos:Point;
-	public final keys:Int;
+	public final doors:Int;
 
-	public function new(pos:Point, keys:Int) {
+	public function new(pos:Point, doors:Int) {
 		this.pos = pos;
-		this.keys = keys;
+		this.doors = doors;
 	}
 
 	public function hashCode():String {
-		return keys + " " + pos;
+		return pos.toString();
+	}
+}
+
+private class SearchState {
+	public final positions:Array<String>;
+	public final keys:Int;
+
+	final hash:String;
+
+	public function new(positions:Array<String>, keys:Int) {
+		this.positions = positions;
+		this.keys = keys;
+		hash = keys + " " + positions;
+	}
+
+	public function hashCode():String {
+		return hash;
 	}
 }
 
 @:forward
-private enum abstract Tile(String) from String {
+private enum abstract Tile(String) from String to String {
 	var Entrance = "@";
 	var Wall = "#";
 	var Empty = ".";
 
 	public function isKey():Bool {
-		return ~/[a-z]/.match(this);
+		var code = this.fastCodeAt(0);
+		return code >= 97 && code <= 122;
 	}
 
 	public function isDoor():Bool {
-		return ~/[A-Z]/.match(this);
+		var code = this.fastCodeAt(0);
+		return code >= 65 && code <= 90;
 	}
 }

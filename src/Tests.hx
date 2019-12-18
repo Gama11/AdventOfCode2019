@@ -234,5 +234,11 @@ class Tests implements ITest {
 		136 == Day18.findShortestPath(getData("day18-3"));
 		81 == Day18.findShortestPath(getData("day18-4"));
 		4192 == Day18.findShortestPath(getData("day18-5"));
+
+		8 == Day18.findShortestPath(getData("day18-6"));
+		24 == Day18.findShortestPath(getData("day18-7"));
+		32 == Day18.findShortestPath(getData("day18-8"));
+		72 == Day18.findShortestPath(getData("day18-9"));
+		1790 == Day18.findShortestPath(getData("day18-10"));
 	}
 }

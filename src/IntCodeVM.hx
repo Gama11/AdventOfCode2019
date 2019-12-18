@@ -45,7 +45,11 @@ class IntCodeVM {
 				case Immediate: value;
 				case Relative: memory[(value + relativeBase).toInt()];
 			}
+			#if static
+			return result;
+			#else
 			return if (result == null) 0 else result;
+			#end
 		}
 		function write(value:Int64, mode:ParameterMode) {
 			var offset = if (mode == Relative) relativeBase else 0;

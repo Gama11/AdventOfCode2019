@@ -11,7 +11,7 @@
 -lib hxnodejs
 
 # -cpp export/cpp
-# -cmd export\cpp\Tests.exe
+# -cmd export\cpp\Tests-debug.exe
 
 # -java export/java
 # -D jvm
