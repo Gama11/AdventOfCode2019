@@ -14,6 +14,15 @@ class Util {
 		return r < 0 ? r + b : r;
 	}
 
+	public static function bitCount(x:Int):Int {
+		x = x - ((x >> 1) & 0x55555555);
+		x = (x & 0x33333333) + ((x >> 2) & 0x33333333);
+		x = (x + (x >> 4)) & 0x0F0F0F0F;
+		x = x + (x >> 8);
+		x = x + (x >> 16);
+		return x & 0x0000003F;
+	}
+
 	public static function findBounds(points:Array<Point>) {
 		final n = 9999999;
 		var maxX = -n;
@@ -181,7 +190,7 @@ class Point implements Hashable {
 		return '$x,$y';
 	}
 
-	function toString():String {
+	public function toString():String {
 		return '($x, $y)';
 	}
 }

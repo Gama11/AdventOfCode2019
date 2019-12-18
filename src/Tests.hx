@@ -164,6 +164,7 @@ class Tests implements ITest {
 		2732 == Day10.findByVaporizationRank(getData("day10-5"));
 	}
 
+	@Ignored
 	function specDay11() {
 		2255 == Day11.countPaintedPanels(getData("day11"));
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
@@ -218,10 +219,20 @@ class Tests implements ITest {
 		"16178430" == Day16.performFFS(getData("day16"));
 	}
 
+	@Ignored
 	function specDay17() {
 		76 == Day17.calculateAlignmentParameterSum(getData("day17-0"));
 		5940 == Day17.calibrateCameras(getData("day17-1"));
 
 		923795 == Day17.warnRobots(getData("day17-1"));
+	}
+
+	function specDay18() {
+		8 == Day18.findShortestPath(getData("day18-0"));
+		86 == Day18.findShortestPath(getData("day18-1"));
+		132 == Day18.findShortestPath(getData("day18-2"));
+		136 == Day18.findShortestPath(getData("day18-3"));
+		81 == Day18.findShortestPath(getData("day18-4"));
+		4192 == Day18.findShortestPath(getData("day18-5"));
 	}
 }

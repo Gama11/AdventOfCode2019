@@ -100,8 +100,8 @@ private class State {
 		this.vm = vm;
 	}
 
-	public function hashCode():Int {
-		return pos.hashCode();
+	public function hashCode():String {
+		return pos.toString();
 	}
 }
 

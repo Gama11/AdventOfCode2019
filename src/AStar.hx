@@ -1,38 +1,37 @@
-import haxe.ds.HashMap;
 import polygonal.ds.PriorityQueue;
 import Util.PrioritizedItem;
 
 class AStar {
 	public static function search<T:State>(start:T, isGoal:T->Bool, score:T->Int, getMoves:T->Array<Move<T>>):Null<Int> {
-		var scores = new HashMap<T, Score>();
-		scores.set(start, {
+		var scores = new Map<String, Score>();
+		scores.set(start.hashCode(), {
 			g: 0,
 			f: score(start)
 		});
-		var closedSet = new HashMap<T, Bool>();
+		var closedSet = new Map<String, Bool>();
 		var openSet = new PriorityQueue(1, true, [new PrioritizedItem(start, score(start))]);
 
 		while (openSet.size > 0) {
 			var current = openSet.dequeue().item;
-			closedSet.set(current, true);
+			closedSet.set(current.hashCode(), true);
 
-			var currentScore = scores.get(current).g;
+			var currentScore = scores.get(current.hashCode()).g;
 			if (isGoal(current)) {
 				return currentScore;
 			}
 
 			for (move in getMoves(current)) {
-				if (closedSet.exists(move.state)) {
+				if (closedSet.exists(move.state.hashCode())) {
 					continue;
 				}
-				var node = scores.get(move.state);
+				var node = scores.get(move.state.hashCode());
 				var scoreAfterMove = currentScore + move.cost;
 				if (node == null || node.g > scoreAfterMove) {
 					var score = {
 						g: scoreAfterMove,
 						f: scoreAfterMove + score(move.state)
 					};
-					scores.set(move.state, score);
+					scores.set(move.state.hashCode(), score);
 					openSet.enqueue(new PrioritizedItem(move.state, score.f));
 				}
 			}
@@ -48,7 +47,7 @@ typedef Move<T> = {
 }
 
 typedef State = {
-	function hashCode():Int;
+	function hashCode():String;
 }
 
 private typedef Score = {
