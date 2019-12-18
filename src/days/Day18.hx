@@ -145,11 +145,11 @@ private enum abstract Tile(String) from String to String {
 
 	public function isKey():Bool {
 		var code = this.fastCodeAt(0);
-		return code >= 97 && code <= 122;
+		return code >= "a".code && code <= "z".code;
 	}
 
 	public function isDoor():Bool {
 		var code = this.fastCodeAt(0);
-		return code >= 65 && code <= 90;
+		return code >= "A".code && code <= "Z".code;
 	}
 }
