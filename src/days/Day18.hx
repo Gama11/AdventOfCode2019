@@ -48,7 +48,7 @@ class Day18 {
 				function explore(direction:Direction) {
 					var newPos = state.pos.add(direction);
 					var tile = maze.get(newPos);
-					if (tile == Wall) {
+					if (tile == Wall || (tile.isKey() && tile != to)) {
 						return;
 					}
 					var doors = state.doors;
