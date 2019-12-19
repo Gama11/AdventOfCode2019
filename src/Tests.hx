@@ -245,5 +245,6 @@ class Tests implements ITest {
 
 	function specDay19() {
 		162 == Day19.countPointsAffectedByBeam(getData("day19"));
+		13021056 == Day19.findClosestPossibleShipLocation(getData("day19"));
 	}
 }
