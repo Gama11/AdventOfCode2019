@@ -9,7 +9,7 @@ class Day15 {
 	static function explore(input:String, isGoal:State->Bool) {
 		var ship = new Ship();
 		var start = new State(new Point(0, 0), Empty, new IntCodeVM(input));
-		var shortestDistance = AStar.search(start, isGoal, s -> 0, function(state) {
+		var result = AStar.search(start, isGoal, s -> 0, function(state) {
 			var moves = [];
 			function explore(direction:Direction) {
 				var pos = state.pos.add(direction);
@@ -37,9 +37,9 @@ class Day15 {
 				explore(direction);
 			}
 			return moves;
-		}).score;
+		});
 		return {
-			shortestDistance: shortestDistance,
+			shortestDistance: if (result != null) result.score else null,
 			ship: ship
 		};
 	}

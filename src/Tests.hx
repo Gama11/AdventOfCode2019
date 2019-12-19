@@ -227,6 +227,7 @@ class Tests implements ITest {
 		923795 == Day17.warnRobots(getData("day17-1"));
 	}
 
+	@Ignored
 	function specDay18() {
 		8 == Day18.findShortestPath(getData("day18-0"));
 		86 == Day18.findShortestPath(getData("day18-1"));
@@ -240,5 +241,9 @@ class Tests implements ITest {
 		32 == Day18.findShortestPath(getData("day18-8"));
 		72 == Day18.findShortestPath(getData("day18-9"));
 		1790 == Day18.findShortestPath(getData("day18-10"));
+	}
+
+	function specDay19() {
+		162 == Day19.countPointsAffectedByBeam(getData("day19"));
 	}
 }
