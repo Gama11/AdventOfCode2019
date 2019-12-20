@@ -250,8 +250,12 @@ class Tests implements ITest {
 	}
 
 	function specDay20() {
-		23 == Day20.findShortestPath(getData("day20-0"));
-		58 == Day20.findShortestPath(getData("day20-1"));
-		548 == Day20.findShortestPath(getData("day20-2"));
+		23 == Day20.findShortestPath(getData("day20-0"), false);
+		58 == Day20.findShortestPath(getData("day20-1"), false);
+		548 == Day20.findShortestPath(getData("day20-2"), false);
+
+		26 == Day20.findShortestPath(getData("day20-0"), true);
+		396 == Day20.findShortestPath(getData("day20-3"), true);
+		6452 == Day20.findShortestPath(getData("day20-2"), true);
 	}
 }

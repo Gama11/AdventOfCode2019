@@ -24,6 +24,7 @@ class Day20 {
 				});
 			}
 		}
+		var max = new Point(gridArray[0].length, gridArray.length);
 		var start = null;
 		var end = null;
 		var portals = new Map<String, Point>();
@@ -64,8 +65,10 @@ class Day20 {
 								portals[label] = a;
 							} else {
 								// connect the portal
-								grid.set(a, Portal(label, b));
-								grid.set(b, Portal(label, a));
+								var d = 3;
+								var outer = pos.x < d || pos.x > max.x - d || pos.y < d || pos.y > max.y - d;
+								grid.set(a, Portal(label, b, outer));
+								grid.set(b, Portal(label, a, !outer));
 							}
 					}
 
@@ -82,9 +85,11 @@ class Day20 {
 		};
 	}
 
-	public static function findShortestPath(input:String):Int {
+	public static function findShortestPath(input:String, recursive:Bool):Int {
 		var maze = parse(input);
-		return AStar.search(new State(maze.start), s -> s.pos.equals(maze.end), s -> 0, function(state) {
+		var start = new State(0, maze.start);
+		var end = new State(0, maze.end);
+		return AStar.search(start, s -> s.hashCode() == end.hashCode(), s -> s.level, function(state) {
 			var moves = [];
 			function explore(dir:Direction) {
 				var pos = state.pos.add(dir);
@@ -93,13 +98,19 @@ class Day20 {
 					case Passage:
 						moves.push({
 							cost: 1,
-							state: new State(pos)
+							state: new State(state.level, pos)
 						});
-					case Portal(_, target):
-						moves.push({
-							cost: 2,
-							state: new State(target)
-						});
+					case Portal(_, target, outer):
+						var level = state.level;
+						if (recursive) {
+							level += if (outer) -1 else 1;
+						}
+						if (level >= 0) {
+							moves.push({
+								cost: 2,
+								state: new State(level, target)
+							});
+						}
 				}
 			}
 			for (direction in Direction.directions) {
@@ -122,17 +133,19 @@ private enum Tile {
 	Wall;
 	Passage;
 	Letter(letter:String);
-	Portal(label:String, target:Point);
+	Portal(label:String, target:Point, outer:Bool);
 }
 
 private class State {
+	public final level:Int;
 	public final pos:Point;
 
-	public function new(pos:Point) {
+	public function new(level:Int, pos:Point) {
+		this.level = level;
 		this.pos = pos;
 	}
 
 	public function hashCode():String {
-		return pos.toString();
+		return level + " " + pos.toString();
 	}
 }
