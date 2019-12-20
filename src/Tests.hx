@@ -243,8 +243,15 @@ class Tests implements ITest {
 		1790 == Day18.findShortestPath(getData("day18-10"));
 	}
 
+	@Ignored
 	function specDay19() {
 		162 == Day19.countPointsAffectedByBeam(getData("day19"));
 		13021056 == Day19.findClosestPossibleShipLocation(getData("day19"));
+	}
+
+	function specDay20() {
+		23 == Day20.findShortestPath(getData("day20-0"));
+		58 == Day20.findShortestPath(getData("day20-1"));
+		548 == Day20.findShortestPath(getData("day20-2"));
 	}
 }
