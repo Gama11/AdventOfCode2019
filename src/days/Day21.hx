@@ -5,7 +5,7 @@ import haxe.macro.Expr;
 class Day21 {
 	#if !macro
 	public static function walk(program:String):Int {
-		return findHullDamage(program, assemble({
+		return analyzeHullDamage(program, assemble({
 			jump = !isGround(3);
 			jump = jump && isGround(4);
 
@@ -17,9 +17,18 @@ class Day21 {
 	}
 
 	public static function run(program:String):Int {
-		return findHullDamage(program, assemble({
+		return analyzeHullDamage(program, assemble({
 			jump = !isGround(3);
 			jump = jump && isGround(4);
+
+			temp = !isGround(5);
+			temp = !temp;
+			temp = temp || isGround(8);
+			jump = jump && temp;
+
+			temp = !isGround(2);
+			temp = temp && isGround(4);
+			jump = jump || temp;
 
 			temp = !isGround(1);
 			jump = jump || temp;
@@ -28,7 +37,7 @@ class Day21 {
 		}));
 	}
 
-	public static function findHullDamage(program:String, springscript:String):Int {
+	public static function analyzeHullDamage(program:String, springscript:String):Int {
 		trace(springscript);
 		var springdroid = new IntCodeVM(program);
 		for (code in springscript) {

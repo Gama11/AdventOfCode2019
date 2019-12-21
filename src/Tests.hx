@@ -262,6 +262,6 @@ class Tests implements ITest {
 
 	function specDay21() {
 		19347995 == Day21.walk(getData("day21"));
-		0 == Day21.run(getData("day21"));
+		1141826552 == Day21.run(getData("day21"));
 	}
 }
