@@ -4,15 +4,33 @@ import haxe.macro.Expr;
 
 class Day21 {
 	#if !macro
-	public static function findHullDamage(program:String):Int {
-		var springdroid = new IntCodeVM(program);
-		var springscript = assemble({
-			jump = !groundThreeAway;
-			jump = jump && groundFourAway;
+	public static function walk(program:String):Int {
+		return findHullDamage(program, assemble({
+			jump = !isGround(3);
+			jump = jump && isGround(4);
 
-			temp = !groundOneAway;
+			temp = !isGround(1);
 			jump = jump || temp;
-		});
+
+			walk();
+		}));
+	}
+
+	public static function run(program:String):Int {
+		return findHullDamage(program, assemble({
+			jump = !isGround(3);
+			jump = jump && isGround(4);
+
+			temp = !isGround(1);
+			jump = jump || temp;
+
+			run();
+		}));
+	}
+
+	public static function findHullDamage(program:String, springscript:String):Int {
+		trace(springscript);
+		var springdroid = new IntCodeVM(program);
 		for (code in springscript) {
 			springdroid.write(code);
 		}
@@ -33,14 +51,7 @@ class Day21 {
 
 	static macro function assemble(input:Expr):Expr {
 		var springscript = "";
-		var registers = [
-			"jump" => "J",
-			"temp" => "T",
-			"groundOneAway" => "A",
-			"groundTwoAway" => "B",
-			"groundThreeAway" => "C",
-			"groundFourAway" => "D"
-		];
+		var registers = ["jump" => "J", "temp" => "T"];
 		function getRegister(expr:Expr) {
 			return switch expr.expr {
 				case EConst(CIdent(ident)):
@@ -49,12 +60,17 @@ class Day21 {
 						throw "unknown register " + name;
 					}
 					return name;
-				case _: throw "identifier expected";
+
+				case ECall({expr: EConst(CIdent("isGround"))}, [{expr: EConst(CInt(i))}]):
+					return String.fromCharCode("A".code + Std.parseInt(i) - 1);
+
+				case _:
+					throw "identifier expected";
 			}
 		}
 		function processInstruction(expr:Expr) {
-			switch expr {
-				case macro $lhs = $rhs:
+			switch expr.expr {
+				case EBinop(OpAssign, lhs, rhs):
 					var r2 = getRegister(lhs);
 					if (r2 != "J" && r2 != "T") {
 						throw 'register $r2 is not writable';
@@ -80,22 +96,30 @@ class Day21 {
 							op = "NOT";
 							r1 = getRegister(e);
 
-						case _: throw 'invalid rhs operator';
+						case _:
+							throw 'invalid rhs operator';
 					}
 					springscript += '$op $r1 $r2\n';
+
 				case _:
 					throw "assignment expected";
 			}
 		}
 		switch input.expr {
 			case EBlock(exprs):
+				var last = exprs.pop();
 				for (expr in exprs) {
 					processInstruction(expr);
+				}
+				switch last.expr {
+					case ECall({expr: EConst(CIdent(name))}, []) if (name == "walk" || name == "run"):
+						springscript += name.toUpperCase() + "\n";
+					case _:
+						throw 'last expression must be walk() or run()';
 				}
 			case _:
 				throw "block expected";
 		}
-		springscript += "WALK\n";
 		return macro $v{springscript};
 	}
 }

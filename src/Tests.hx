@@ -261,6 +261,7 @@ class Tests implements ITest {
 	}
 
 	function specDay21() {
-		19347995 == Day21.findHullDamage(getData("day21"));
+		19347995 == Day21.walk(getData("day21"));
+		0 == Day21.run(getData("day21"));
 	}
 }
