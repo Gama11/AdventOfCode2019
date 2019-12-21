@@ -249,6 +249,7 @@ class Tests implements ITest {
 		13021056 == Day19.findClosestPossibleShipLocation(getData("day19"));
 	}
 
+	@Ignored
 	function specDay20() {
 		23 == Day20.findShortestPath(getData("day20-0"), false);
 		58 == Day20.findShortestPath(getData("day20-1"), false);
@@ -257,5 +258,9 @@ class Tests implements ITest {
 		26 == Day20.findShortestPath(getData("day20-0"), true);
 		396 == Day20.findShortestPath(getData("day20-3"), true);
 		6452 == Day20.findShortestPath(getData("day20-2"), true);
+	}
+
+	function specDay21() {
+		19347995 == Day21.findHullDamage(getData("day21"));
 	}
 }

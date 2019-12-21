@@ -7,6 +7,7 @@ class IntCodeVM {
 
 	public var memory(default, null):Array<Int64>;
 	public var finished(default, null) = false;
+	public var executedInstructions(default, null) = 0;
 
 	public function new(program:String) {
 		memory = program.trim().split(",").map(Int64.parseString);
@@ -105,6 +106,7 @@ class IntCodeVM {
 				case code:
 					throw 'unknown opcode $code';
 			}
+			executedInstructions++;
 		}
 	}
 
@@ -116,6 +118,7 @@ class IntCodeVM {
 		copy.relativeBase = relativeBase;
 		copy.memory = memory.copy();
 		copy.finished = finished;
+		copy.executedInstructions = executedInstructions;
 		return copy;
 	}
 }
