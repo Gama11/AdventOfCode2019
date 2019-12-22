@@ -274,20 +274,34 @@ class Tests implements ITest {
 
 		var input = getData("day22-4");
 		var parsedInput = Day22.parse(input);
+		var part2Size = Int64.parseString("119315717514047");
+		var part2Shuffles = Int64.parseString("101741582076661");
 
 		3074 == Day22.shuffle(input, 10007).indexOf(2019);
-		3074 == Day22.positionOf(parsedInput, 10007, 2019);
+		3074 == Day22.positionOfCardWithNumber(parsedInput, 10007, 2019);
 		5003 == Day22.findCycle(input, 10007);
 		true == Day22.isValidDeckSize(input, 10007);
-		true == Day22.isValidDeckSize(input, Int64.parseString("119315717514047"));
-		2019 == Day22.reversePositionOf(parsedInput, 10007, 3074);
+		true == Day22.isValidDeckSize(input, part2Size);
+		2019 == Day22.numberOfCardInPosition(parsedInput, 10007, 3074);
 
-		for (size in 10000...100000) {
+		var shuffles = 20000;
+		var initialPos:Int64 = 5698;
+		var finalPos = initialPos;
+		for (_ in 0...shuffles) {
+			
+			finalPos = Day22.positionOfCardWithNumber(parsedInput, 10007, finalPos);
+		}
+		9365 == finalPos;
+		initialPos == Day22.fastNumberOfCardInPosition(parsedInput, finalPos, 10007, shuffles, 5003);
+
+		// Day22.numberOfCardInPosition(parsedInput, 2020, part2Size, part2Shuffles, ???);
+
+		/* for (size in 10000...100000) {
 			if (Day22.isValidDeckSize(input, size)) {
 				var cycle = Day22.findCycle(input, size);
 				trace(size, cycle, Std.int(size / cycle), size % cycle);
 			}
-		}
+		}*/
 		/* var o = [];
 			for (i in 0...10007) {
 				o.push(Std.string(i).lpad(" ", 6) + " -> " + Day22.positionOf(Day22.parse(input), 10007, i));

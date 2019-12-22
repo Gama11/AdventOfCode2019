@@ -36,7 +36,8 @@ class Day22 {
 		return deck;
 	}
 
-	public static function positionOf(instructions:Array<Instruction>, size:Int64, pos:Int64):Int64 {
+	public static function positionOfCardWithNumber(instructions:Array<Instruction>, size:Int64, number:Int64):Int64 {
+		var pos = number;
 		for (instruction in instructions) {
 			switch instruction {
 				case DealIntoNewStack:
@@ -55,10 +56,10 @@ class Day22 {
 		return pos;
 	}
 
-	public static function reversePositionOf(instructions:Array<Instruction>, size:Int64, pos:Int64) {
-		instructions = instructions.copy();
-		instructions.reverse();
-		for (instruction in instructions) {
+	public static function numberOfCardInPosition(instructions:Array<Instruction>, size:Int64, pos:Int64) {
+		var i = instructions.length;
+		while (i-- > 0) {
+			var instruction = instructions[i];
 			switch instruction {
 				case DealIntoNewStack:
 					pos = size - pos - 1;
@@ -76,13 +77,21 @@ class Day22 {
 		return pos;
 	}
 
+	public static function fastNumberOfCardInPosition(instructions:Array<Instruction>, pos:Int64, size:Int64, shuffles:Int64, cycle:Int64):Int64 {
+		var shufflesLeft = shuffles % cycle;
+		while (shufflesLeft-- > 0) {
+			pos = numberOfCardInPosition(instructions, size, pos);
+		}
+		return pos;
+	}
+
 	public static function findCycle(input:String, size:Int64):Null<Int> {
 		var instructions = parse(input);
 		var pos:Int64 = 0;
 		var seen = [Std.string(pos) => 0];
 		var i = 0;
 		while (true) {
-			pos = positionOf(instructions, size, pos);
+			pos = positionOfCardWithNumber(instructions, size, pos);
 			var s = Std.string(pos);
 			i++;
 			if (seen.exists(s)) {
