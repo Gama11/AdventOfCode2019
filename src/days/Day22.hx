@@ -1,7 +1,7 @@
 package days;
 
 class Day22 {
-	static function parse(input:String):Array<Instruction> {
+	public static function parse(input:String):Array<Instruction> {
 		return input.split("\n").map(function(line) {
 			return switch line.split(" ") {
 				case ["deal", "into", "new", "stack"]: DealIntoNewStack;
@@ -36,9 +36,7 @@ class Day22 {
 		return deck;
 	}
 
-	public static function positionOf(input:String, size:Int64, card:Int):Int64 {
-		var instructions = parse(input);
-		var pos:Int64 = card;
+	public static function positionOf(instructions:Array<Instruction>, size:Int64, pos:Int64):Int64 {
 		for (instruction in instructions) {
 			switch instruction {
 				case DealIntoNewStack:
@@ -65,6 +63,22 @@ class Day22 {
 			}
 		}
 		return pos;
+	}
+
+	public static function findCycle(input:String, size:Int64):Null<Int> {
+		var instructions = parse(input);
+		var pos:Int64 = 0;
+		var i = 0;
+		while (true) {
+			pos = positionOf(instructions, size, pos);
+			if (pos == 0) {
+				return i;
+			}
+			i++;
+			if (i > size) {
+				return null;
+			}
+		}
 	}
 }
 

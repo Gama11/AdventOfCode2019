@@ -38,7 +38,6 @@ class Day21 {
 	}
 
 	public static function analyzeHullDamage(program:String, springscript:String):Int {
-		trace(springscript);
 		var springdroid = new IntCodeVM(program);
 		for (code in springscript) {
 			springdroid.write(code);
