@@ -12,9 +12,11 @@ class Day22 {
 		});
 	}
 
-	public static function shuffle(input:String, size:Int = 10):Array<Int> {
+	public static function shuffle(input:String, size:Int = 10, ?deck:Array<Int>):Array<Int> {
 		var instructions = parse(input);
-		var deck = [for (i in 0...size) i];
+		if (deck == null) {
+			deck = [for (i in 0...size) i];
+		}
 		for (instruction in instructions) {
 			switch instruction {
 				case DealIntoNewStack:
@@ -85,8 +87,10 @@ class Day22 {
 		return pos;
 	}
 
-	public static function findCycle(input:String, size:Int64):Null<Int> {
-		var instructions = parse(input);
+	public static function findCycle(instructions:Array<Instruction>, size:Int64, ?limit:Int64):Null<Int> {
+		if (limit == null) {
+			limit = size;
+		}
 		var pos:Int64 = 0;
 		var seen = [Std.string(pos) => 0];
 		var i = 0;
@@ -98,14 +102,13 @@ class Day22 {
 				return i - seen[s];
 			}
 			seen[s] = i;
-			if (i > size) {
+			if (i > limit) {
 				return null;
 			}
 		}
 	}
 
-	public static function isValidDeckSize(input:String, size:Int64):Bool {
-		var instructions = parse(input);
+	public static function isValidDeckSize(instructions:Array<Instruction>, size:Int64):Bool {
 		return !instructions.exists(i -> switch i {
 			case Cut(cards): size < Std.int(Math.abs(cards));
 			case DealWithIncrement(increment): increment != 0 && size % increment == 0;

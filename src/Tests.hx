@@ -273,34 +273,35 @@ class Tests implements ITest {
 		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
 
 		var input = getData("day22-4");
-		var parsedInput = Day22.parse(input);
+		var instructions = Day22.parse(input);
 		var part2Size = Int64.parseString("119315717514047");
 		var part2Shuffles = Int64.parseString("101741582076661");
 
 		3074 == Day22.shuffle(input, 10007).indexOf(2019);
-		3074 == Day22.positionOfCardWithNumber(parsedInput, 10007, 2019);
-		5003 == Day22.findCycle(input, 10007);
-		true == Day22.isValidDeckSize(input, 10007);
-		true == Day22.isValidDeckSize(input, part2Size);
-		2019 == Day22.numberOfCardInPosition(parsedInput, 10007, 3074);
+		3074 == Day22.positionOfCardWithNumber(instructions, 10007, 2019);
+		5003 == Day22.findCycle(instructions, 10007);
+		true == Day22.isValidDeckSize(instructions, 10007);
+		true == Day22.isValidDeckSize(instructions, part2Size);
+		2019 == Day22.numberOfCardInPosition(instructions, 10007, 3074);
 
 		var shuffles = 20000;
 		var initialPos:Int64 = 5698;
 		var finalPos = initialPos;
 		for (_ in 0...shuffles) {
-			
-			finalPos = Day22.positionOfCardWithNumber(parsedInput, 10007, finalPos);
+			finalPos = Day22.positionOfCardWithNumber(instructions, 10007, finalPos);
 		}
 		9365 == finalPos;
-		initialPos == Day22.fastNumberOfCardInPosition(parsedInput, finalPos, 10007, shuffles, 5003);
+		initialPos == Day22.fastNumberOfCardInPosition(instructions, finalPos, 10007, shuffles, 5003);
 
-		// Day22.numberOfCardInPosition(parsedInput, 2020, part2Size, part2Shuffles, ???);
+		// trace(Day22.fastNumberOfCardInPosition(instructions, 2020, part2Size, part2Shuffles, Int64.parseString("59657858757023")));
 
-		/* for (size in 10000...100000) {
-			if (Day22.isValidDeckSize(input, size)) {
-				var cycle = Day22.findCycle(input, size);
-				trace(size, cycle, Std.int(size / cycle), size % cycle);
-			}
+		/* var size = 50000;
+			while (true) {
+				if (Day22.isValidDeckSize(instructions, size)) {
+					var cycle = Day22.findCycle(instructions, size);
+					trace(size, cycle, Std.int(size / cycle), size % cycle);
+				}
+				size++;
 		}*/
 		/* var o = [];
 			for (i in 0...10007) {
