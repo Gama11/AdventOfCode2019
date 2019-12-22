@@ -264,4 +264,12 @@ class Tests implements ITest {
 		19347995 == Day21.walk(getData("day21"));
 		1141826552 == Day21.run(getData("day21"));
 	}
+
+	function specDay22() {
+		Assert.same([0, 3, 6, 9, 2, 5, 8, 1, 4, 7], Day22.shuffle(getData("day22-0")));
+		Assert.same([3, 0, 7, 4, 1, 8, 5, 2, 9, 6], Day22.shuffle(getData("day22-1")));
+		Assert.same([6, 3, 0, 7, 4, 1, 8, 5, 2, 9], Day22.shuffle(getData("day22-2")));
+		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
+		3074 == Day22.shuffle(getData("day22-4"), 10007).indexOf(2019);
+	}
 }
