@@ -280,8 +280,7 @@ class Tests implements ITest {
 		5002 == Day22.findCycle(input, 10007);
 		true == Day22.isValidDeckSize(input, 10007);
 		true == Day22.isValidDeckSize(input, Int64.parseString("119315717514047"));
-		
-		// Day22.reversePositionOf(parsedInput, 10007, 3074) == Day22.positionOf(parsedInput, 10007, 2019);
+		2019 == Day22.reversePositionOf(parsedInput, 10007, 3074);
 
 		/* for (size in 10000...100000) {
 			if (Day22.isValidDeckSize(input, size)) {
@@ -289,12 +288,11 @@ class Tests implements ITest {
 				trace(size, cycle, Std.int(size / cycle), size % cycle);
 			}
 		}*/
-
 		/* var o = [];
-		for (i in 0...10007) {
-			o.push(Std.string(i).lpad(" ", 6) + " -> " + Day22.positionOf(Day22.parse(input), 10007, i));
-		}
-		sys.io.File.saveContent("movements.txt", o.join("\n")); */
+			for (i in 0...10007) {
+				o.push(Std.string(i).lpad(" ", 6) + " -> " + Day22.positionOf(Day22.parse(input), 10007, i));
+			}
+			sys.io.File.saveContent("movements.txt", o.join("\n")); */
 
 		// trace(Day22.findCycle(input, 10021));
 		// trace(Day22.shuffle(input, 10066).slice(0, 100));

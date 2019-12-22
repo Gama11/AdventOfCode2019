@@ -55,6 +55,27 @@ class Day22 {
 		return pos;
 	}
 
+	public static function reversePositionOf(instructions:Array<Instruction>, size:Int64, pos:Int64) {
+		instructions = instructions.copy();
+		instructions.reverse();
+		for (instruction in instructions) {
+			switch instruction {
+				case DealIntoNewStack:
+					pos = size - pos - 1;
+
+				case Cut(n):
+					pos = Util.mod64(size + pos + n, size);
+
+				case DealWithIncrement(n):
+					pos = Util.mod64(pos * Util.modInverse64(n, size), size);
+			}
+			if (pos < 0 || pos >= size) {
+				throw 'invalid position $pos during $instruction';
+			}
+		}
+		return pos;
+	}
+
 	public static function findCycle(input:String, size:Int64):Null<Int> {
 		var instructions = parse(input);
 		var pos:Int64 = 0;

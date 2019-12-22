@@ -14,6 +14,38 @@ class Util {
 		return r < 0 ? r + b : r;
 	}
 
+	public static function gcd(a:Int64, b:Int64):Int64 {
+		return if (b == 0) a else gcd(b, Util.mod64(a, b));
+	}
+
+	public static function lcm(a:Int64, b:Int64):Int64 {
+		var product = a * b;
+		if (product < 0) {
+			product *= -1;
+		}
+		return product / gcd(a, b);
+	}
+
+	public static function modInverse64(a:Int64, m:Int64):Int64 {
+		if (m == 1) {
+			return 0;
+		}
+		var m0 = m;
+		var x:Int64 = 1, y:Int64 = 0;
+		while (a > 1) {
+			var q = a / m;
+
+			var t = m;
+			m = a % m;
+			a = t;
+
+			t = y;
+			y = x - q * y;
+			x = t;
+		}
+		return if (x < 0) x + m0 else x;
+	}
+
 	public static function bitCount(x:Int):Int {
 		x = x - ((x >> 1) & 0x55555555);
 		x = (x & 0x33333333) + ((x >> 2) & 0x33333333);

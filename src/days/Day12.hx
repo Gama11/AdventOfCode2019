@@ -59,18 +59,6 @@ class Day12 {
 		return moons.map(m -> sum(m.position) * sum(m.velocity)).sum();
 	}
 
-	static function greatestCommonDivisor(a:Int64, b:Int64):Int64 {
-		return if (b == 0) a else greatestCommonDivisor(b, Util.mod64(a, b));
-	}
-
-	static function leastCommonMultiple(a:Int64, b:Int64):Int64 {
-		var product = a * b;
-		if (product < 0) {
-			product *= -1;
-		}
-		return product / greatestCommonDivisor(a, b);
-	}
-
 	public static function findCycle(input:String):Int64 {
 		var moons = parse(input);
 		var step = 0;
@@ -104,7 +92,7 @@ class Day12 {
 			simulate(moons);
 			step++;
 		}
-		return leastCommonMultiple(loops[0].start, leastCommonMultiple(loops[1].start, loops[2].start));
+		return Util.lcm(loops[0].start, Util.lcm(loops[1].start, loops[2].start));
 	}
 }
 
