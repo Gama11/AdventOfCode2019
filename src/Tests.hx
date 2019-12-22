@@ -260,6 +260,7 @@ class Tests implements ITest {
 		6452 == Day20.findShortestPath(getData("day20-2"), true);
 	}
 
+	@Ignored
 	function specDay21() {
 		19347995 == Day21.walk(getData("day21"));
 		1141826552 == Day21.run(getData("day21"));

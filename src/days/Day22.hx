@@ -51,7 +51,7 @@ class Day22 {
 						}
 					} else {
 						var shift = size + cards;
-						if (pos > shift) {
+						if (pos >= shift) {
 							pos -= shift;
 						} else {
 							pos -= cards;
@@ -60,6 +60,9 @@ class Day22 {
 
 				case DealWithIncrement(increment):
 					pos = (pos * increment) % size;
+			}
+			if (pos < 0 || pos >= size) {
+				throw 'invalid position $pos during $instruction';
 			}
 		}
 		return pos;
