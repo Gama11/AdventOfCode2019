@@ -42,24 +42,11 @@ class Day22 {
 				case DealIntoNewStack:
 					pos = size - pos - 1;
 
-				case Cut(cards):
-					if (cards >= 0) {
-						if (pos < cards) {
-							pos += size - cards;
-						} else {
-							pos -= cards;
-						}
-					} else {
-						var shift = size + cards;
-						if (pos >= shift) {
-							pos -= shift;
-						} else {
-							pos -= cards;
-						}
-					}
+				case Cut(n):
+					pos = Util.mod64(pos - n, size);
 
-				case DealWithIncrement(increment):
-					pos = (pos * increment) % size;
+				case DealWithIncrement(n):
+					pos = Util.mod64(pos * n, size);
 			}
 			if (pos < 0 || pos >= size) {
 				throw 'invalid position $pos during $instruction';

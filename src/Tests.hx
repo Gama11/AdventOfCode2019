@@ -273,15 +273,28 @@ class Tests implements ITest {
 		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
 
 		var input = getData("day22-4");
+		var parsedInput = Day22.parse(input);
+
 		3074 == Day22.shuffle(input, 10007).indexOf(2019);
-		3074 == Day22.positionOf(Day22.parse(input), 10007, 2019);
+		3074 == Day22.positionOf(parsedInput, 10007, 2019);
 		5002 == Day22.findCycle(input, 10007);
-		for (size in 10000...100000) {
+		true == Day22.isValidDeckSize(input, 10007);
+		true == Day22.isValidDeckSize(input, Int64.parseString("119315717514047"));
+		
+		// Day22.reversePositionOf(parsedInput, 10007, 3074) == Day22.positionOf(parsedInput, 10007, 2019);
+
+		/* for (size in 10000...100000) {
 			if (Day22.isValidDeckSize(input, size)) {
 				var cycle = Day22.findCycle(input, size);
 				trace(size, cycle, Std.int(size / cycle), size % cycle);
 			}
+		}*/
+
+		/* var o = [];
+		for (i in 0...10007) {
+			o.push(Std.string(i).lpad(" ", 6) + " -> " + Day22.positionOf(Day22.parse(input), 10007, i));
 		}
+		sys.io.File.saveContent("movements.txt", o.join("\n")); */
 
 		// trace(Day22.findCycle(input, 10021));
 		// trace(Day22.shuffle(input, 10066).slice(0, 100));
