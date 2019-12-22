@@ -271,5 +271,7 @@ class Tests implements ITest {
 		Assert.same([6, 3, 0, 7, 4, 1, 8, 5, 2, 9], Day22.shuffle(getData("day22-2")));
 		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
 		3074 == Day22.shuffle(getData("day22-4"), 10007).indexOf(2019);
+
+		3074 == Day22.positionOf(getData("day22-4"), 10007, 2019);
 	}
 }
