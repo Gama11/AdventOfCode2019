@@ -84,10 +84,11 @@ class Day22 {
 		while (true) {
 			pos = positionOf(instructions, size, pos);
 			var s = Std.string(pos);
+			i++;
 			if (seen.exists(s)) {
 				return i - seen[s];
 			}
-			seen[s] = i++;
+			seen[s] = i;
 			if (i > size) {
 				return null;
 			}
