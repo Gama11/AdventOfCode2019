@@ -271,9 +271,19 @@ class Tests implements ITest {
 		Assert.same([3, 0, 7, 4, 1, 8, 5, 2, 9, 6], Day22.shuffle(getData("day22-1")));
 		Assert.same([6, 3, 0, 7, 4, 1, 8, 5, 2, 9], Day22.shuffle(getData("day22-2")));
 		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
-		3074 == Day22.shuffle(getData("day22-4"), 10007).indexOf(2019);
 
-		3074 == Day22.positionOf(Day22.parse(getData("day22-4")), 10007, 2019);
-		5002 == Day22.findCycle(getData("day22-4"), 10007);
+		var input = getData("day22-4");
+		3074 == Day22.shuffle(input, 10007).indexOf(2019);
+		3074 == Day22.positionOf(Day22.parse(input), 10007, 2019);
+		5002 == Day22.findCycle(input, 10007);
+		for (size in 10000...100000) {
+			if (Day22.isValidDeckSize(input, size)) {
+				var cycle = Day22.findCycle(input, size);
+				trace(size, cycle, Std.int(size / cycle), size % cycle);
+			}
+		}
+
+		// trace(Day22.findCycle(input, 10021));
+		// trace(Day22.shuffle(input, 10066).slice(0, 100));
 	}
 }

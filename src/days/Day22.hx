@@ -71,17 +71,28 @@ class Day22 {
 	public static function findCycle(input:String, size:Int64):Null<Int> {
 		var instructions = parse(input);
 		var pos:Int64 = 0;
+		var seen = [Std.string(pos) => 0];
 		var i = 0;
 		while (true) {
 			pos = positionOf(instructions, size, pos);
-			if (pos == 0) {
-				return i;
+			var s = Std.string(pos);
+			if (seen.exists(s)) {
+				return i - seen[s];
 			}
-			i++;
+			seen[s] = i++;
 			if (i > size) {
 				return null;
 			}
 		}
+	}
+
+	public static function isValidDeckSize(input:String, size:Int64):Bool {
+		var instructions = parse(input);
+		return !instructions.exists(i -> switch i {
+			case Cut(cards): size < Std.int(Math.abs(cards));
+			case DealWithIncrement(increment): increment != 0 && size % increment == 0;
+			case _: false;
+		});
 	}
 }
 
