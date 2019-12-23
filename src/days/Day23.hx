@@ -2,7 +2,7 @@ package days;
 
 class Day23 {
 	public static function simulateNetwork(program:String, result:ResultKind):Int64 {
-		var computers = [for (addresss in 0...50) new IntCodeVM(program).write(addresss).write(-1)];
+		var computers = [for (addresss in 0...50) new IntCodeVM(program).write(addresss)];
 		var nat:{x:Int64, y:Int64} = null;
 		var prevNatDeliveryY:Int64 = null;
 		while (true) {
@@ -30,7 +30,7 @@ class Day23 {
 			}
 			if (networkIdle) {
 				if (nat == null) {
-					throw "network idle but not NAT packet";
+					throw "network idle but no NAT packet";
 				} else {
 					if (prevNatDeliveryY != null && nat.y == prevNatDeliveryY) {
 						return nat.y;
