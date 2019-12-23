@@ -314,6 +314,7 @@ class Tests implements ITest {
 	}
 
 	function specDay23() {
-		23626 == Day23.simulateNetwork(getData("day23"));
+		23626 == Day23.simulateNetwork(getData("day23"), FirstNatY);
+		19019 == Day23.simulateNetwork(getData("day23"), FirstConsecutivelyIdenticalNatY);
 	}
 }

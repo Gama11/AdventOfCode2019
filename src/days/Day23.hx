@@ -1,11 +1,16 @@
 package days;
 
 class Day23 {
-	public static function simulateNetwork(program:String):Int64 {
+	public static function simulateNetwork(program:String, result:ResultKind):Int64 {
 		var computers = [for (addresss in 0...50) new IntCodeVM(program).write(addresss).write(-1)];
+		var nat:{x:Int64, y:Int64} = null;
+		var prevNatDeliveryY:Int64 = null;
 		while (true) {
+			var networkIdle = true;
 			for (computer in computers) {
-				if (!computer.hasInput()) {
+				if (computer.hasInput()) {
+					networkIdle = false;
+				} else {
 					computer.write(-1);
 				}
 				computer.run();
@@ -14,11 +19,31 @@ class Day23 {
 					var x = computer.read();
 					var y = computer.read();
 					if (destination == 255) {
-						return y;
+						nat = {x: x, y: y};
+						if (result == FirstNatY) {
+							return y;
+						}
+					} else {
+						computers[destination.toInt()].write(x).write(y);
 					}
-					computers[destination.toInt()].write(x).write(y);
+				}
+			}
+			if (networkIdle) {
+				if (nat == null) {
+					throw "network idle but not NAT packet";
+				} else {
+					if (prevNatDeliveryY != null && nat.y == prevNatDeliveryY) {
+						return nat.y;
+					}
+					computers[0].write(nat.x).write(nat.y);
+					prevNatDeliveryY = nat.y;
 				}
 			}
 		}
 	}
+}
+
+enum ResultKind {
+	FirstNatY;
+	FirstConsecutivelyIdenticalNatY;
 }
