@@ -272,22 +272,6 @@ class Tests implements ITest {
 		Assert.same([6, 3, 0, 7, 4, 1, 8, 5, 2, 9], Day22.shuffle(getData("day22-2")));
 		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
 
-		var ins = Day22.parse(getData("day22-3"));
-		trace(Day22.shuffle(getData("day22-3")));
-
-		var a = [];
-		for (i in 0...10) {
-			a[Day22.positionOfCardWithNumber(ins, 10, i).toInt()] = i;
-		}
-		trace(a);
-
-		var merged = Day22.mergeInstructions(ins, 10);
-		var a = [];
-		for (i in 0...10) {
-			a[Day22.fastNumberOfCardInPosition(ins, 10, i).toInt()] = i;
-		}
-		trace(a);
-
 		var input = getData("day22-4");
 		var instructions = Day22.parse(input);
 		var part2Size = Int64.parseString("119315717514047");
@@ -295,8 +279,10 @@ class Tests implements ITest {
 
 		3074 == Day22.shuffle(input, 10007).indexOf(2019);
 		3074 == Day22.positionOfCardWithNumber(instructions, 10007, 2019);
-		3074 == Day22.fastNumberOfCardInPosition(instructions, 10007, 2019);
+		3074 == Day22.fastPositionOfCardWithNumber(instructions, 10007, 2019);
+
 		2019 == Day22.numberOfCardInPosition(instructions, 10007, 3074);
+		2019 == Day22.fastNumberOfCardInPosition(instructions, 10007, 3074);
 	}
 
 	function specDay23() {

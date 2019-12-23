@@ -104,9 +104,14 @@ class Day22 {
 		};
 	}
 
+	public static function fastPositionOfCardWithNumber(instructions:Array<Instruction>, size:Int64, number:Int64):Int64 {
+		var instructions = mergeInstructions(instructions, size);
+		return Util.mod64(instructions.increment * number + instructions.offset, size);
+	}
+
 	public static function fastNumberOfCardInPosition(instructions:Array<Instruction>, size:Int64, pos:Int64):Int64 {
 		var instructions = mergeInstructions(instructions, size);
-		return Util.mod64(instructions.increment * pos + instructions.offset, size);
+		return Util.mod64((pos - instructions.offset) * Util.modInverse64(instructions.increment, size), size);
 	}
 }
 
