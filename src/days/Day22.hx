@@ -43,7 +43,7 @@ class Day22 {
 		for (instruction in instructions) {
 			switch instruction {
 				case DealIntoNewStack:
-					pos = size - pos - 1;
+					pos = Util.mod64(pos * -1 - 1, size);
 
 				case Cut(n):
 					pos = Util.mod64(pos - n, size);
@@ -64,10 +64,10 @@ class Day22 {
 			var instruction = instructions[i];
 			switch instruction {
 				case DealIntoNewStack:
-					pos = size - pos - 1;
+					pos = Util.mod64(pos * -1 - 1, size);
 
 				case Cut(n):
-					pos = Util.mod64(size + pos + n, size);
+					pos = Util.mod64(pos + n, size);
 
 				case DealWithIncrement(n):
 					pos = Util.mod64(pos * Util.modInverse64(n, size), size);
@@ -79,41 +79,34 @@ class Day22 {
 		return pos;
 	}
 
-	public static function fastNumberOfCardInPosition(instructions:Array<Instruction>, pos:Int64, size:Int64, shuffles:Int64, cycle:Int64):Int64 {
-		var shufflesLeft = shuffles % cycle;
-		while (shufflesLeft-- > 0) {
-			pos = numberOfCardInPosition(instructions, size, pos);
+	public static function mergeInstructions(instructions:Array<Instruction>, size:Int64):MergedInstructions {
+		var increment:Int64 = 1;
+		var offset:Int64 = 0;
+		for (instruction in instructions) {
+			switch instruction {
+				case DealIntoNewStack:
+					increment *= -1;
+					offset = -offset + size - 1;
+
+				case Cut(n):
+					offset -= n;
+
+				case DealWithIncrement(n):
+					increment *= n;
+					offset *= n;
+			}
+			increment = Util.mod64(increment, size);
+			offset = Util.mod64(offset, size);
 		}
-		return pos;
+		return {
+			increment: increment,
+			offset: offset
+		};
 	}
 
-	public static function findCycle(instructions:Array<Instruction>, size:Int64, ?limit:Int64):Null<Int> {
-		if (limit == null) {
-			limit = size;
-		}
-		var pos:Int64 = 0;
-		var seen = [Std.string(pos) => 0];
-		var i = 0;
-		while (true) {
-			pos = positionOfCardWithNumber(instructions, size, pos);
-			var s = Std.string(pos);
-			i++;
-			if (seen.exists(s)) {
-				return i - seen[s];
-			}
-			seen[s] = i;
-			if (i > limit) {
-				return null;
-			}
-		}
-	}
-
-	public static function isValidDeckSize(instructions:Array<Instruction>, size:Int64):Bool {
-		return !instructions.exists(i -> switch i {
-			case Cut(cards): size < Std.int(Math.abs(cards));
-			case DealWithIncrement(increment): increment != 0 && size % increment == 0;
-			case _: false;
-		});
+	public static function fastNumberOfCardInPosition(instructions:Array<Instruction>, size:Int64, pos:Int64):Int64 {
+		var instructions = mergeInstructions(instructions, size);
+		return Util.mod64(instructions.increment * pos + instructions.offset, size);
 	}
 }
 
@@ -121,4 +114,9 @@ enum Instruction {
 	DealIntoNewStack;
 	Cut(cards:Int);
 	DealWithIncrement(increment:Int);
+}
+
+typedef MergedInstructions = {
+	final increment:Int64;
+	final offset:Int64;
 }

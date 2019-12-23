@@ -272,6 +272,22 @@ class Tests implements ITest {
 		Assert.same([6, 3, 0, 7, 4, 1, 8, 5, 2, 9], Day22.shuffle(getData("day22-2")));
 		Assert.same([9, 2, 5, 8, 1, 4, 7, 0, 3, 6], Day22.shuffle(getData("day22-3")));
 
+		var ins = Day22.parse(getData("day22-3"));
+		trace(Day22.shuffle(getData("day22-3")));
+
+		var a = [];
+		for (i in 0...10) {
+			a[Day22.positionOfCardWithNumber(ins, 10, i).toInt()] = i;
+		}
+		trace(a);
+
+		var merged = Day22.mergeInstructions(ins, 10);
+		var a = [];
+		for (i in 0...10) {
+			a[Day22.fastNumberOfCardInPosition(ins, 10, i).toInt()] = i;
+		}
+		trace(a);
+
 		var input = getData("day22-4");
 		var instructions = Day22.parse(input);
 		var part2Size = Int64.parseString("119315717514047");
@@ -279,38 +295,8 @@ class Tests implements ITest {
 
 		3074 == Day22.shuffle(input, 10007).indexOf(2019);
 		3074 == Day22.positionOfCardWithNumber(instructions, 10007, 2019);
-		5003 == Day22.findCycle(instructions, 10007);
-		true == Day22.isValidDeckSize(instructions, 10007);
-		true == Day22.isValidDeckSize(instructions, part2Size);
+		3074 == Day22.fastNumberOfCardInPosition(instructions, 10007, 2019);
 		2019 == Day22.numberOfCardInPosition(instructions, 10007, 3074);
-
-		var shuffles = 20000;
-		var initialPos:Int64 = 5698;
-		var finalPos = initialPos;
-		for (_ in 0...shuffles) {
-			finalPos = Day22.positionOfCardWithNumber(instructions, 10007, finalPos);
-		}
-		9365 == finalPos;
-		initialPos == Day22.fastNumberOfCardInPosition(instructions, finalPos, 10007, shuffles, 5003);
-
-		// trace(Day22.fastNumberOfCardInPosition(instructions, 2020, part2Size, part2Shuffles, Int64.parseString("59657858757023")));
-
-		/* var size = 50000;
-			while (true) {
-				if (Day22.isValidDeckSize(instructions, size)) {
-					var cycle = Day22.findCycle(instructions, size);
-					trace(size, cycle, Std.int(size / cycle), size % cycle);
-				}
-				size++;
-		}*/
-		/* var o = [];
-			for (i in 0...10007) {
-				o.push(Std.string(i).lpad(" ", 6) + " -> " + Day22.positionOf(Day22.parse(input), 10007, i));
-			}
-			sys.io.File.saveContent("movements.txt", o.join("\n")); */
-
-		// trace(Day22.findCycle(input, 10021));
-		// trace(Day22.shuffle(input, 10349).exists(i -> i == null) ? "invalid shuffle" : "valid shuffle");
 	}
 
 	function specDay23() {
