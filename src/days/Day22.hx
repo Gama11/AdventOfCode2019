@@ -1,5 +1,11 @@
 package days;
 
+#if python
+import StdTypes.Int as Int64;
+#else
+import haxe.Int64;
+#end
+
 class Day22 {
 	public static function parse(input:String):Array<Instruction> {
 		return input.split("\n").map(function(line) {
@@ -70,7 +76,7 @@ class Day22 {
 					pos = Util.mod64(pos + n, size);
 
 				case DealWithIncrement(n):
-					pos = Util.mod64(pos * Util.modInverse64(n, size), size);
+					pos = Util.mod64(pos * Util.modInv64(n, size), size);
 			}
 			if (pos < 0 || pos >= size) {
 				throw 'invalid position $pos during $instruction';
@@ -86,14 +92,13 @@ class Day22 {
 			switch instruction {
 				case DealIntoNewStack:
 					increment *= -1;
-					offset = -offset + size - 1;
+					offset += increment;
 
 				case Cut(n):
-					offset -= n;
+					offset += increment * n;
 
 				case DealWithIncrement(n):
-					increment *= n;
-					offset *= n;
+					increment *= Util.modInv64(n, size);
 			}
 			increment = Util.mod64(increment, size);
 			offset = Util.mod64(offset, size);
@@ -104,14 +109,12 @@ class Day22 {
 		};
 	}
 
-	public static function fastPositionOfCardWithNumber(instructions:Array<Instruction>, size:Int64, number:Int64):Int64 {
-		var instructions = mergeInstructions(instructions, size);
-		return Util.mod64(instructions.increment * number + instructions.offset, size);
-	}
-
-	public static function fastNumberOfCardInPosition(instructions:Array<Instruction>, size:Int64, pos:Int64):Int64 {
-		var instructions = mergeInstructions(instructions, size);
-		return Util.mod64((pos - instructions.offset) * Util.modInverse64(instructions.increment, size), size);
+	public static function fastNumberOfCardInPosition(instructions:Array<Instruction>, size:Int64, pos:Int64, shuffles:Int64):Int64 {
+		var i = mergeInstructions(instructions, size);
+		var mod = n -> Util.mod64(n, size);
+		var pow = (b, e) -> Util.modPow64(b, e, size);
+		var inv = n -> Util.modInv64(n, size);
+		return mod(pow(i.increment, shuffles) * pos + mod(i.offset * (pow(i.increment, shuffles) - 1)) * inv(i.increment - 1));
 	}
 }
 

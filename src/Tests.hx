@@ -3,6 +3,9 @@ import utest.ITest;
 import utest.Assert;
 import utest.UTest;
 import haxe.Int64.parseString as int64;
+#if python
+import python.Syntax.code;
+#end
 
 class Tests implements ITest {
 	static function main() {
@@ -170,6 +173,7 @@ class Tests implements ITest {
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
 	}
 
+	#if !python
 	@Ignored
 	function specDay12() {
 		179 == Day12.computeTotalEnergy(getData("day12-0"), 10);
@@ -180,6 +184,7 @@ class Tests implements ITest {
 		int64("4686774924") == Day12.findCycle(getData("day12-1"));
 		int64("324618307124784") == Day12.findCycle(getData("day12-2"));
 	}
+	#end
 
 	@Ignored
 	function specDay13() {
@@ -274,15 +279,16 @@ class Tests implements ITest {
 
 		var input = getData("day22-4");
 		var instructions = Day22.parse(input);
-		var part2Size = Int64.parseString("119315717514047");
-		var part2Shuffles = Int64.parseString("101741582076661");
 
 		3074 == Day22.shuffle(input, 10007).indexOf(2019);
 		3074 == Day22.positionOfCardWithNumber(instructions, 10007, 2019);
-		3074 == Day22.fastPositionOfCardWithNumber(instructions, 10007, 2019);
+		2019 == Day22.fastNumberOfCardInPosition(instructions, 10007, 879, 10);
 
-		2019 == Day22.numberOfCardInPosition(instructions, 10007, 3074);
-		2019 == Day22.fastNumberOfCardInPosition(instructions, 10007, 3074);
+		#if python // don't ask...
+		var part2Size = code("119315717514047");
+		var part2Shuffles = code("101741582076661");
+		Assert.equals(code("104073967000066"), Day22.fastNumberOfCardInPosition(instructions, part2Size, 2020, part2Shuffles));
+		#end
 	}
 
 	function specDay23() {

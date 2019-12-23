@@ -1,6 +1,10 @@
 import haxe.ds.HashMap;
 import polygonal.ds.Prioritizable;
+#if python
+import StdTypes.Int as Int64;
+#else
 import haxe.Int64;
+#end
 import polygonal.ds.Hashable;
 
 class Util {
@@ -14,6 +18,7 @@ class Util {
 		return r < 0 ? r + b : r;
 	}
 
+	#if !python
 	public static function gcd(a:Int64, b:Int64):Int64 {
 		return if (b == 0) a else gcd(b, Util.mod64(a, b));
 	}
@@ -25,25 +30,25 @@ class Util {
 		}
 		return product / gcd(a, b);
 	}
+	#end
 
-	public static function modInverse64(a:Int64, m:Int64):Int64 {
-		if (m == 1) {
-			return 0;
+	public static function modInv64(a:Int64, m:Int64):Int64 {
+		return modPow64(a, m - 2, m);
+	}
+
+	public static function modPow64(base:Int64, exponent:Int64, m:Int64):Int64 {
+		var r:Int64 = 1;
+		while (true) {
+			if (exponent % 2 == 1) {
+				r = mod64(r * base, m);
+			}
+			exponent = #if python Std.int(exponent / 2) #else exponent / 2 #end;
+			if (exponent == 0) {
+				break;
+			}
+			base = mod64(base * base, m);
 		}
-		var m0 = m;
-		var x:Int64 = 1, y:Int64 = 0;
-		while (a > 1) {
-			var q = a / m;
-
-			var t = m;
-			m = a % m;
-			a = t;
-
-			t = y;
-			y = x - q * y;
-			x = t;
-		}
-		return if (x < 0) x + m0 else x;
+		return r;
 	}
 
 	public static function bitCount(x:Int):Int {
