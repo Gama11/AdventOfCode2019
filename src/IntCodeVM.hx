@@ -34,6 +34,10 @@ class IntCodeVM {
 		return outputs.shift();
 	}
 
+	public function hasInput():Bool {
+		return inputs.length > 0;
+	}
+
 	public function hasOutput():Bool {
 		return outputs.length > 0;
 	}

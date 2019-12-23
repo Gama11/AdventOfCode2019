@@ -312,4 +312,8 @@ class Tests implements ITest {
 		// trace(Day22.findCycle(input, 10021));
 		// trace(Day22.shuffle(input, 10349).exists(i -> i == null) ? "invalid shuffle" : "valid shuffle");
 	}
+
+	function specDay23() {
+		23626 == Day23.simulateNetwork(getData("day23"));
+	}
 }
