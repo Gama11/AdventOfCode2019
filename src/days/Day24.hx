@@ -64,7 +64,7 @@ class Day24 {
 
 	public static function countBugsWithRecursiveSurfaces(input:String, minutes:Int):Int {
 		var surfaces = new RecursiveSurface();
-		function add(surfaces:RecursiveSurface, depth:Int, surface:Surface) {
+		function addLevel(surfaces:RecursiveSurface, depth:Int, surface:Surface) {
 			surface.set(new Point(Center, Center), Inner);
 			surfaces[depth] = surface;
 			return surface;
@@ -78,61 +78,63 @@ class Day24 {
 			}
 			return surface;
 		}
-		add(surfaces, -1, emptySurface());
-		add(surfaces, 0, parse(input));
-		add(surfaces, 1, emptySurface());
+		addLevel(surfaces, -1, emptySurface());
+		addLevel(surfaces, 0, parse(input));
+		addLevel(surfaces, 1, emptySurface());
 
+		function processTile(nextSurfaces, depth, surface, pos) {
+			var adjacentBugs = countAdjacentBugs(surface, pos);
+			function expand(direction:Int):Null<Surface> {
+				var level = depth + direction;
+				if (surfaces.exists(level)) {
+					return surfaces.get(level);
+				}
+				if (adjacentBugs > 0) {
+					return addLevel(nextSurfaces, level, emptySurface());
+				}
+				return null;
+			}
+			var recursiveBugs = 0;
+			function check(surface:Surface, pos:Point) {
+				if (surface.get(pos) == Bug) {
+					recursiveBugs++;
+				}
+			}
+			for (dir in Direction.directions) {
+				switch surface.get(pos + dir) {
+					case Inner:
+						var inner = expand(1);
+						if (inner == null) {
+							break;
+						}
+						function walk(pos:Point, dir:Direction) {
+							for (_ in 0...GridSize) {
+								check(inner, pos);
+								pos += dir;
+							}
+						}
+						switch dir {
+							case Left: walk(new Point(GridSize - 1, 0), Down);
+							case Right: walk(new Point(0, 0), Down);
+							case Up: walk(new Point(0, GridSize - 1), Right);
+							case Down: walk(new Point(0, 0), Right);
+						}
+					case Outer:
+						var outer = expand(-1);
+						if (outer != null) {
+							check(outer, new Point(Center, Center) + dir);
+						}
+					case _:
+				}
+			}
+			return nextTile(surface.get(pos), adjacentBugs + recursiveBugs);
+		}
 		for (_ in 0...minutes) {
 			var nextSurfaces = new RecursiveSurface();
 			for (depth => surface in surfaces) {
-				var next = new HashMap();
+				var next = new Surface();
 				for (pos in surface.keys()) {
-					var adjacentBugs = countAdjacentBugs(surface, pos);
-					function expand(direction:Int):Null<Surface> {
-						var level = depth + direction;
-						if (surfaces.exists(level)) {
-							return surfaces.get(level);
-						}
-						if (adjacentBugs > 0) {
-							return add(nextSurfaces, level, emptySurface());
-						}
-						return null;
-					}
-					var recursiveBugs = 0;
-					for (dir in Direction.directions) {
-						var neighbour = pos + dir;
-						function check(surface:Surface, pos:Point) {
-							if (surface.get(pos) == Bug) {
-								recursiveBugs++;
-							}
-						}
-						switch surface.get(neighbour) {
-							case Inner:
-								var inner = expand(1);
-								if (inner != null) {
-									function walk(pos:Point, dir:Direction) {
-										for (_ in 0...GridSize) {
-											check(inner, pos);
-											pos += dir;
-										}
-									}
-									switch dir {
-										case Left: walk(new Point(GridSize - 1, 0), Down);
-										case Right: walk(new Point(0, 0), Down);
-										case Up: walk(new Point(0, GridSize - 1), Right);
-										case Down: walk(new Point(0, 0), Right);
-									}
-								}
-							case Outer:
-								var outer = expand(-1);
-								if (outer != null) {
-									check(outer, new Point(Center, Center) + dir);
-								}
-							case _:
-						}
-					}
-					var tile = surface.get(pos);
-					next.set(pos, nextTile(tile, adjacentBugs + recursiveBugs));
+					next.set(pos, processTile(nextSurfaces, depth, surface, pos));
 				}
 				nextSurfaces[depth] = next;
 			}
