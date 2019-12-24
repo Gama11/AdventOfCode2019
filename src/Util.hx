@@ -232,6 +232,7 @@ class Point implements Hashable {
 	}
 }
 
+@:forward
 abstract Direction(Point) to Point {
 	public static final Left = new Direction(-1, 0);
 	public static final Up = new Direction(0, -1);

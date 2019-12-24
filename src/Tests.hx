@@ -299,5 +299,8 @@ class Tests implements ITest {
 	function specDay24() {
 		2129920 == Day24.findBiodiversityOfFirstDuplicate(getData("day24-0"));
 		23846449 == Day24.findBiodiversityOfFirstDuplicate(getData("day24-1"));
+
+		99 == Day24.countBugsWithRecursiveSurfaces(getData("day24-0"), 10);
+		1934 == Day24.countBugsWithRecursiveSurfaces(getData("day24-1"), 200);
 	}
 }
