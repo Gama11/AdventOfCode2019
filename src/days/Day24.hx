@@ -34,6 +34,18 @@ class Day24 {
 		return biodiversity;
 	}
 
+	static function countAdjacentBugs(surface:Surface, pos:Point):Int {
+		return Direction.directions.count(dir -> surface.get(pos.add(dir)) == Bug);
+	}
+
+	static function nextTile(current:Tile, adjacentBugs:Int):Tile {
+		return switch current {
+			case Bug if (adjacentBugs != 1): Empty;
+			case Empty if (adjacentBugs == 1 || adjacentBugs == 2): Bug;
+			case _: current;
+		}
+	}
+
 	public static function findBiodiversityOfFirstDuplicate(input:String):Int {
 		var surface = parse(input);
 		var seen = new Map<String, Bool>();
@@ -41,13 +53,9 @@ class Day24 {
 			seen.set(render(surface), true);
 			var next = new Surface();
 			for (pos in surface.keys()) {
-				var adjacentBugs = Direction.directions.map(dir -> surface.get(pos.add(dir))).filter(t -> t == Bug).length;
+				var adjacentBugs = countAdjacentBugs(surface, pos);
 				var tile = surface.get(pos);
-				next.set(pos, switch tile {
-					case Bug if (adjacentBugs != 1): Empty;
-					case Empty if (adjacentBugs == 1 || adjacentBugs == 2): Bug;
-					case _: tile;
-				});
+				next.set(pos, nextTile(tile, adjacentBugs));
 			}
 			surface = next;
 		}
@@ -79,8 +87,7 @@ class Day24 {
 			for (depth => surface in surfaces) {
 				var next = new HashMap();
 				for (pos in surface.keys()) {
-					var tile = surface.get(pos);
-					var adjacentBugs = Direction.directions.filter(dir -> surface.get(pos.add(dir)) == Bug).length;
+					var adjacentBugs = countAdjacentBugs(surface, pos);
 					function expand(direction:Int):Null<Surface> {
 						var level = depth + direction;
 						if (surfaces.exists(level)) {
@@ -94,8 +101,8 @@ class Day24 {
 					var recursiveBugs = 0;
 					for (dir in Direction.directions) {
 						var neighbour = pos.add(dir);
-						function check(surface:Surface, x:Int, y:Int) {
-							if (surface.get(new Point(x, y)) == Bug) {
+						function check(surface:Surface, pos:Point) {
+							if (surface.get(pos) == Bug) {
 								recursiveBugs++;
 							}
 						}
@@ -103,45 +110,35 @@ class Day24 {
 							case null:
 								var outer = expand(-1);
 								if (outer != null) {
-									check(outer, Center + dir.x, Center + dir.y);
+									check(outer, new Point(Center, Center).add(dir));
 								}
 							case Inner:
 								var inner = expand(1);
 								if (inner != null) {
+									function walk(pos:Point, dir:Direction) {
+										for (_ in 0...GridSize) {
+											check(inner, pos);
+											pos = pos.add(dir);
+										}
+									}
 									switch dir {
-										case Left:
-											for (y in 0...GridSize) {
-												check(inner, GridSize - 1, y);
-											}
-										case Right:
-											for (y in 0...GridSize) {
-												check(inner, 0, y);
-											}
-										case Up:
-											for (x in 0...GridSize) {
-												check(inner, x, GridSize - 1);
-											}
-										case Down:
-											for (x in 0...GridSize) {
-												check(inner, x, 0);
-											}
+										case Left: walk(new Point(GridSize - 1, 0), Down);
+										case Right: walk(new Point(0, 0), Down);
+										case Up: walk(new Point(0, GridSize - 1), Right);
+										case Down: walk(new Point(0, 0), Right);
 									}
 								}
 							case _:
 						}
 					}
-					adjacentBugs += recursiveBugs;
-					next.set(pos, switch tile {
-						case Bug if (adjacentBugs != 1): Empty;
-						case Empty if (adjacentBugs == 1 || adjacentBugs == 2): Bug;
-						case _: tile;
-					});
+					var tile = surface.get(pos);
+					next.set(pos, nextTile(tile, adjacentBugs + recursiveBugs));
 				}
 				nextSurfaces[depth] = next;
 			}
 			surfaces = nextSurfaces;
 		}
-		return surfaces.map(surface -> [for (tile in surface) if (tile == Bug) tile].length).sum();
+		return surfaces.map(surface -> [for (tile in surface) tile].count(tile -> tile == Bug)).sum();
 	}
 }
 
