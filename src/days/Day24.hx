@@ -107,11 +107,6 @@ class Day24 {
 							}
 						}
 						switch surface.get(neighbour) {
-							case null:
-								var outer = expand(-1);
-								if (outer != null) {
-									check(outer, new Point(Center, Center) + dir);
-								}
 							case Inner:
 								var inner = expand(1);
 								if (inner != null) {
@@ -127,6 +122,11 @@ class Day24 {
 										case Up: walk(new Point(0, GridSize - 1), Right);
 										case Down: walk(new Point(0, 0), Right);
 									}
+								}
+							case Outer:
+								var outer = expand(-1);
+								if (outer != null) {
+									check(outer, new Point(Center, Center) + dir);
 								}
 							case _:
 						}
@@ -146,6 +146,7 @@ private enum abstract Tile(String) from String to String {
 	var Bug = "#";
 	var Empty = ".";
 	var Inner = "?";
+	var Outer = null;
 }
 
 private typedef Surface = HashMap<Point, Tile>;
