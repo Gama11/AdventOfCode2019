@@ -12,7 +12,7 @@ class Day15 {
 		var result = AStar.search(start, isGoal, s -> 0, function(state) {
 			var moves = [];
 			function explore(direction:Direction) {
-				var pos = state.pos.add(direction);
+				var pos = state.pos + direction;
 				if (ship.get(pos) == Wall) {
 					return;
 				}
@@ -70,7 +70,7 @@ class Day15 {
 				return time;
 			}
 			ship.set(pos, Wall);
-			return Direction.directions.max(direction -> fill(pos.add(direction), time + 1)).value;
+			return Direction.directions.max(direction -> fill(pos + direction, time + 1)).value;
 		}
 		return fill(oxygenSystem, -1);
 	}

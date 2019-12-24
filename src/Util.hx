@@ -157,7 +157,38 @@ class StaticExtensions {
 	}
 }
 
-class Point implements Hashable {
+@:forward
+abstract Point(PointImpl) from PointImpl to {function hashCode():Int;} {
+	public inline function new(x, y) {
+		this = new PointImpl(x, y);
+	}
+
+	@:op(A + B) inline function add(point:Point):Point {
+		return new Point(this.x + point.x, this.y + point.y);
+	}
+
+	@:op(A - B) inline function subtract(point:Point):Point {
+		return new Point(this.x - point.x, this.y - point.y);
+	}
+
+	@:op(A * B) inline function scale(n:Int):Point {
+		return new Point(this.x * n, this.y * n);
+	}
+
+	@:op(A == B) inline function equals(point:Point):Bool {
+		return this.x == point.x && this.y == point.y;
+	}
+
+	@:op(A != B) inline function notEquals(point:Point):Bool {
+		return !equals(point);
+	}
+
+	public inline function invert():Point {
+		return new Point(-this.x, -this.y);
+	}
+}
+
+private class PointImpl implements Hashable {
 	public final x:Int;
 	public final y:Int;
 
@@ -171,22 +202,6 @@ class Point implements Hashable {
 
 	public function hashCode():Int {
 		return x + 10000 * y;
-	}
-
-	public inline function add(point:Point):Point {
-		return new Point(x + point.x, y + point.y);
-	}
-
-	public inline function subtract(point:Point):Point {
-		return new Point(x - point.x, y - point.y);
-	}
-
-	public inline function scale(n:Int):Point {
-		return new Point(x * n, y * n);
-	}
-
-	public inline function invert():Point {
-		return new Point(-x, -y);
 	}
 
 	public function distanceTo(point:Point):Int {
@@ -217,10 +232,6 @@ class Point implements Hashable {
 			}
 		}
 		return angle;
-	}
-
-	public inline function equals(point:Point):Bool {
-		return x == point.x && y == point.y;
 	}
 
 	public function shortString():String {

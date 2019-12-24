@@ -35,7 +35,7 @@ class Day24 {
 	}
 
 	static function countAdjacentBugs(surface:Surface, pos:Point):Int {
-		return Direction.directions.count(dir -> surface.get(pos.add(dir)) == Bug);
+		return Direction.directions.count(dir -> surface.get(pos + dir) == Bug);
 	}
 
 	static function nextTile(current:Tile, adjacentBugs:Int):Tile {
@@ -100,7 +100,7 @@ class Day24 {
 					}
 					var recursiveBugs = 0;
 					for (dir in Direction.directions) {
-						var neighbour = pos.add(dir);
+						var neighbour = pos + dir;
 						function check(surface:Surface, pos:Point) {
 							if (surface.get(pos) == Bug) {
 								recursiveBugs++;
@@ -110,7 +110,7 @@ class Day24 {
 							case null:
 								var outer = expand(-1);
 								if (outer != null) {
-									check(outer, new Point(Center, Center).add(dir));
+									check(outer, new Point(Center, Center) + dir);
 								}
 							case Inner:
 								var inner = expand(1);
@@ -118,7 +118,7 @@ class Day24 {
 									function walk(pos:Point, dir:Direction) {
 										for (_ in 0...GridSize) {
 											check(inner, pos);
-											pos = pos.add(dir);
+											pos += dir;
 										}
 									}
 									switch dir {

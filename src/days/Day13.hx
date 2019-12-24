@@ -53,9 +53,9 @@ class Day13 {
 					case _:
 				}
 			}
-			var ballVelocity = ballPos.subtract(prevBallPos);
+			var ballVelocity = ballPos - prevBallPos;
 			var targetPos = if (ballVelocity.y > 0 && ballPos.y > 20) {
-				ballPos.add(ballVelocity.scale(paddlePos.y - ballPos.y));
+				ballPos + ballVelocity * (paddlePos.y - ballPos.y);
 			} else {
 				ballPos;
 			}

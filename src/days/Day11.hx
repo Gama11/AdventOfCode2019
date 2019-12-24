@@ -25,7 +25,7 @@ class Day11 {
 
 			var turn = robot.read().toInt();
 			facing = facing.rotate(if (turn == CounterClockwise) -1 else 1);
-			position = position.add(facing);
+			position += facing;
 		}
 	}
 

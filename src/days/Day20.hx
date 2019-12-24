@@ -33,7 +33,7 @@ class Day20 {
 			var tile = grid.get(pos);
 			switch tile {
 				case Letter(l1):
-					var adjacentPositions = [Up, Down, Left, Right].map(dir -> pos.add(dir));
+					var adjacentPositions = [Up, Down, Left, Right].map(dir -> pos + dir);
 					var adjacentTiles = adjacentPositions.map(pos -> grid.get(pos));
 					var label = null;
 					var labelledPos = null;
@@ -92,7 +92,7 @@ class Day20 {
 		return AStar.search(start, s -> s.hashCode() == end.hashCode(), s -> s.level, function(state) {
 			var moves = [];
 			function explore(dir:Direction) {
-				var pos = state.pos.add(dir);
+				var pos = state.pos + dir;
 				switch maze.grid.get(pos) {
 					case null | Wall | Letter(_):
 					case Passage:

@@ -43,10 +43,10 @@ class Day18 {
 				start = key.pos;
 			}
 			var goal = keyData[to].pos;
-			return AStar.search(new PruneState(start, 0), s -> s.pos.equals(goal), s -> s.pos.distanceTo(goal), function(state) {
+			return AStar.search(new PruneState(start, 0), s -> s.pos == goal, s -> s.pos.distanceTo(goal), function(state) {
 				var moves = [];
 				function explore(direction:Direction) {
-					var newPos = state.pos.add(direction);
+					var newPos = state.pos + direction;
 					var tile = maze.get(newPos);
 					if (tile == Wall || (tile.isKey() && tile != to)) {
 						return;

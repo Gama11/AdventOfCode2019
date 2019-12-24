@@ -10,7 +10,7 @@ class Day17 {
 		var sum = 0;
 		for (pos in image.keys()) {
 			function peek(direction) {
-				return image.get(pos.add(direction));
+				return image.get(pos + direction);
 			}
 			var tile = image.get(pos);
 			if (tile == Scaffolding && peek(Left) == Scaffolding && peek(Right) == Scaffolding && peek(Up) == Scaffolding && peek(Down) == Scaffolding) {
@@ -63,10 +63,10 @@ class Day17 {
 		var moves = [];
 		var run = 0;
 		while (true) {
-			var nextTile = image.get(pos.add(dir));
+			var nextTile = image.get(pos + dir);
 			if (nextTile == Scaffolding) {
 				run++;
-				pos = pos.add(dir);
+				pos += dir;
 			} else {
 				if (run > 0) {
 					moves.push(Forward(run));
@@ -74,13 +74,13 @@ class Day17 {
 				}
 				// try to turn
 				var left = dir.rotate(-1);
-				if (image.get(pos.add(left)) == Scaffolding) {
+				if (image.get(pos + left) == Scaffolding) {
 					dir = left;
 					moves.push(TurnLeft);
 					continue;
 				}
 				var right = dir.rotate(1);
-				if (image.get(pos.add(right)) == Scaffolding) {
+				if (image.get(pos + right) == Scaffolding) {
 					dir = right;
 					moves.push(TurnRight);
 					continue;

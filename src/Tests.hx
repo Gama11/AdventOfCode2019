@@ -43,7 +43,6 @@ class Tests implements ITest {
 		5064 == Day02.findInputForOutput(getData("day02"), 19690720);
 	}
 
-	@Ignored
 	function specDay03() {
 		var part1 = file -> Day03.getDistanceToClosestIntersection(getData(file), Manhattan);
 		6 == part1("day03-0");
@@ -167,7 +166,6 @@ class Tests implements ITest {
 		2732 == Day10.findByVaporizationRank(getData("day10-5"));
 	}
 
-	@Ignored
 	function specDay11() {
 		2255 == Day11.countPaintedPanels(getData("day11"));
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
@@ -186,7 +184,6 @@ class Tests implements ITest {
 	}
 	#end
 
-	@Ignored
 	function specDay13() {
 		324 == Day13.countBlocks(getData("day13"));
 		15957 == Day13.beatGame(getData("day13"));
@@ -204,7 +201,6 @@ class Tests implements ITest {
 		3279311 == Day14.findMaxFuelProduction(getData("day14-5"));
 	}
 
-	@Ignored
 	function specDay15() {
 		294 == Day15.findShortestPath(getData("day15"));
 		388 == Day15.fillWithOxygen(getData("day15"));
@@ -224,7 +220,6 @@ class Tests implements ITest {
 		"16178430" == Day16.performFFS(getData("day16"));
 	}
 
-	@Ignored
 	function specDay17() {
 		76 == Day17.calculateAlignmentParameterSum(getData("day17-0"));
 		5940 == Day17.calibrateCameras(getData("day17-1"));
@@ -232,7 +227,6 @@ class Tests implements ITest {
 		923795 == Day17.warnRobots(getData("day17-1"));
 	}
 
-	@Ignored
 	function specDay18() {
 		8 == Day18.findShortestPath(getData("day18-0"));
 		86 == Day18.findShortestPath(getData("day18-1"));
@@ -254,7 +248,6 @@ class Tests implements ITest {
 		13021056 == Day19.findClosestPossibleShipLocation(getData("day19"));
 	}
 
-	@Ignored
 	function specDay20() {
 		23 == Day20.findShortestPath(getData("day20-0"), false);
 		58 == Day20.findShortestPath(getData("day20-1"), false);
