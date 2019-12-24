@@ -295,4 +295,9 @@ class Tests implements ITest {
 		23626 == Day23.simulateNetwork(getData("day23"), FirstNatY);
 		19019 == Day23.simulateNetwork(getData("day23"), FirstConsecutivelyIdenticalNatY);
 	}
+
+	function specDay24() {
+		2129920 == Day24.findBiodiversityOfFirstDuplicate(getData("day24-0"));
+		23846449 == Day24.findBiodiversityOfFirstDuplicate(getData("day24-1"));
+	}
 }
