@@ -30,8 +30,22 @@ class IntCodeVM {
 		return this;
 	}
 
+	public function writeString(string:String) {
+		for (code in string) {
+			write(code);
+		}
+	}
+
 	public function read():Null<Int64> {
 		return outputs.shift();
+	}
+
+	public function readString():String {
+		var string = "";
+		while (hasOutput()) {
+			string += String.fromCharCode(read().toInt());
+		}
+		return string;
 	}
 
 	public function hasInput():Bool {

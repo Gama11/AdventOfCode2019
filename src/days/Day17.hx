@@ -36,12 +36,7 @@ class Day17 {
 	}
 
 	static function getInitialCameraOutput(program:String):String {
-		var vm = new IntCodeVM(program).run();
-		var output = "";
-		while (vm.hasOutput()) {
-			output += String.fromCharCode(vm.read().toInt());
-		}
-		return output;
+		return new IntCodeVM(program).run().readString();
 	}
 
 	static function findFullPath(image:Image):Array<Move> {
