@@ -4,7 +4,7 @@ class Day23 {
 	public static function simulateNetwork(program:String, result:ResultKind):Int64 {
 		var computers = [for (addresss in 0...50) new IntCodeVM(program).write(addresss)];
 		var nat:{x:Int64, y:Int64} = null;
-		var prevNatDeliveryY:Int64 = null;
+		var prevNatDeliveryY:Null<Int64> = null;
 		while (true) {
 			var networkIdle = true;
 			for (computer in computers) {

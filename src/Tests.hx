@@ -14,7 +14,7 @@ class Tests implements ITest {
 
 	function new() {}
 
-	function getData(name:String):String {
+	static function getData(name:String):String {
 		return sys.io.File.getContent('data/$name.txt').replace("\r", "");
 	}
 
@@ -43,6 +43,7 @@ class Tests implements ITest {
 		5064 == Day02.findInputForOutput(getData("day02"), 19690720);
 	}
 
+	@Ignored
 	function specDay03() {
 		var part1 = file -> Day03.getDistanceToClosestIntersection(getData(file), Manhattan);
 		6 == part1("day03-0");
@@ -166,6 +167,7 @@ class Tests implements ITest {
 		2732 == Day10.findByVaporizationRank(getData("day10-5"));
 	}
 
+	@Ignored
 	function specDay11() {
 		2255 == Day11.countPaintedPanels(getData("day11"));
 		Sys.println(Day11.renderRegistrationIdentifier(getData("day11")) + "\n");
@@ -184,6 +186,7 @@ class Tests implements ITest {
 	}
 	#end
 
+	@Ignored
 	function specDay13() {
 		324 == Day13.countBlocks(getData("day13"));
 		15957 == Day13.beatGame(getData("day13"));
@@ -201,6 +204,7 @@ class Tests implements ITest {
 		3279311 == Day14.findMaxFuelProduction(getData("day14-5"));
 	}
 
+	@Ignored
 	function specDay15() {
 		294 == Day15.findShortestPath(getData("day15"));
 		388 == Day15.fillWithOxygen(getData("day15"));
@@ -227,6 +231,7 @@ class Tests implements ITest {
 		923795 == Day17.warnRobots(getData("day17-1"));
 	}
 
+	@Ignored
 	function specDay18() {
 		8 == Day18.findShortestPath(getData("day18-0"));
 		86 == Day18.findShortestPath(getData("day18-1"));
@@ -248,6 +253,7 @@ class Tests implements ITest {
 		13021056 == Day19.findClosestPossibleShipLocation(getData("day19"));
 	}
 
+	@Ignored
 	function specDay20() {
 		23 == Day20.findShortestPath(getData("day20-0"), false);
 		58 == Day20.findShortestPath(getData("day20-1"), false);
@@ -264,6 +270,7 @@ class Tests implements ITest {
 		1141826552 == Day21.run(getData("day21"));
 	}
 
+	@Ignored
 	function specDay22() {
 		Assert.same([0, 3, 6, 9, 2, 5, 8, 1, 4, 7], Day22.shuffle(getData("day22-0")));
 		Assert.same([3, 0, 7, 4, 1, 8, 5, 2, 9, 6], Day22.shuffle(getData("day22-1")));
@@ -284,16 +291,22 @@ class Tests implements ITest {
 		#end
 	}
 
+	@Ignored
 	function specDay23() {
 		23626 == Day23.simulateNetwork(getData("day23"), FirstNatY);
 		19019 == Day23.simulateNetwork(getData("day23"), FirstConsecutivelyIdenticalNatY);
 	}
 
+	@Ignored
 	function specDay24() {
 		2129920 == Day24.findBiodiversityOfFirstDuplicate(getData("day24-0"));
 		23846449 == Day24.findBiodiversityOfFirstDuplicate(getData("day24-1"));
 
 		99 == Day24.countBugsWithRecursiveSurfaces(getData("day24-0"), 10);
 		1934 == Day24.countBugsWithRecursiveSurfaces(getData("day24-1"), 200);
+	}
+
+	function specDay25() {
+		16410 == Day25.findMainAirlockPassword(getData("day25"), getData("day25-solution"));
 	}
 }

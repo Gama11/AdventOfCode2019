@@ -34,7 +34,7 @@ class Day19 {
 		var prevLowest = 4;
 		var x = 5;
 		while (true) {
-			var lowest = null;
+			var lowest:Null<Int> = null;
 			for (i in -1...2) {
 				var y = prevLowest + i;
 				if (inBeam(x, y) && (lowest == null || y < lowest)) {
