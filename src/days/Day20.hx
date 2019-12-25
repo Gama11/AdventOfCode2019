@@ -17,11 +17,11 @@ class Day20 {
 				if (char == " ") {
 					continue;
 				}
-				grid.set(pos, switch char {
+				grid[pos] = switch char {
 					case ".": Passage;
 					case "#": Wall;
 					case letter: Letter(letter);
-				});
+				};
 			}
 		}
 		var max = new Point(gridArray[0].length, gridArray.length);
@@ -29,12 +29,11 @@ class Day20 {
 		var end = null;
 		var portals = new Map<String, Point>();
 		// process labels
-		for (pos in grid.keys()) {
-			var tile = grid.get(pos);
+		for (pos => tile in grid) {
 			switch tile {
 				case Letter(l1):
 					var adjacentPositions = [Up, Down, Left, Right].map(dir -> pos + dir);
-					var adjacentTiles = adjacentPositions.map(pos -> grid.get(pos));
+					var adjacentTiles = adjacentPositions.map(pos -> grid[pos]);
 					var label = null;
 					var labelledPos = null;
 					switch adjacentTiles {
@@ -67,8 +66,8 @@ class Day20 {
 								// connect the portal
 								var d = 3;
 								var outer = pos.x < d || pos.x > max.x - d || pos.y < d || pos.y > max.y - d;
-								grid.set(a, Portal(label, b, outer));
-								grid.set(b, Portal(label, a, !outer));
+								grid[a] = Portal(label, b, outer);
+								grid[b] = Portal(label, a, !outer); 
 							}
 					}
 
@@ -93,7 +92,7 @@ class Day20 {
 			var moves = [];
 			function explore(dir:Direction) {
 				var pos = state.pos + dir;
-				switch maze.grid.get(pos) {
+				switch maze.grid[pos] {
 					case null | Wall | Letter(_):
 					case Passage:
 						moves.push({

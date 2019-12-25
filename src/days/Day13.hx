@@ -10,7 +10,7 @@ class Day13 {
 			var x = game.read().toInt();
 			var y = game.read().toInt();
 			var tile = game.read().toInt();
-			screen.set(new Point(x, y), tile);
+			screen[new Point(x, y)] = tile;
 		}
 	}
 
@@ -44,8 +44,8 @@ class Day13 {
 
 			var paddlePos = new Point(0, 0);
 			var ballPos = new Point(0, 0);
-			for (pos in screen.keys()) {
-				switch screen.get(pos) {
+			for (pos => tile in screen) {
+				switch tile {
 					case Paddle:
 						paddlePos = pos;
 					case Ball:
@@ -70,7 +70,7 @@ class Day13 {
 			update(screen, game);
 			prevBallPos = ballPos;
 		}
-		return screen.get(new Point(-1, 0));
+		return screen[new Point(-1, 0)];
 	}
 }
 

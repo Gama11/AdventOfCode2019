@@ -13,7 +13,7 @@ class Day15 {
 			var moves = [];
 			function explore(direction:Direction) {
 				var pos = state.pos + direction;
-				if (ship.get(pos) == Wall) {
+				if (ship[pos] == Wall) {
 					return;
 				}
 				var vm = state.vm.copy();
@@ -24,7 +24,7 @@ class Day15 {
 					case Down: South;
 					case _: throw 'unknown direction';
 				}).run().read().toInt();
-				ship.set(pos, status);
+				ship[pos] = status;
 				if (status == Wall) {
 					return;
 				}
@@ -65,11 +65,11 @@ class Day15 {
 			return false;
 		}).ship;
 		function fill(pos:Point, time:Int):Int {
-			var status = ship.get(pos);
+			var status = ship[pos];
 			if (status == Wall) {
 				return time;
 			}
-			ship.set(pos, Wall);
+			ship[pos] = Wall;
 			return Direction.directions.max(direction -> fill(pos + direction, time + 1)).value;
 		}
 		return fill(oxygenSystem, -1);

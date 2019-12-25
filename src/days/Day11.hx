@@ -8,11 +8,11 @@ class Day11 {
 	static function paint(program:String, initialColor:Color):Hull {
 		var hull = new Hull();
 		var position = new Point(0, 0);
-		hull.set(position, initialColor);
+		hull[position] = initialColor;
 		var facing = Up;
 		var robot = new IntCodeVM(program);
 		while (true) {
-			var color = hull.get(position);
+			var color = hull[position];
 			if (color == null) {
 				color = Black;
 			}
@@ -21,7 +21,7 @@ class Day11 {
 				return hull;
 			}
 			var color = robot.read().toInt();
-			hull.set(position, color);
+			hull[position] = color;
 
 			var turn = robot.read().toInt();
 			facing = facing.rotate(if (turn == CounterClockwise) -1 else 1);
@@ -30,7 +30,7 @@ class Day11 {
 	}
 
 	public static function countPaintedPanels(program:String):Int {
-		return [for (panel in paint(program, Black).keys()) panel].length;
+		return [for (_ in paint(program, Black)) _].length;
 	}
 
 	public static function renderRegistrationIdentifier(program:String):String {

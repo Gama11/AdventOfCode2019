@@ -20,9 +20,9 @@ class Day18 {
 					tile = Empty;
 				}
 				if (tile.isKey()) {
-					keyData.set(tile, {index: keyCount++, pos: pos});
+					keyData[tile] = {index: keyCount++, pos: pos};
 				}
-				maze.set(pos, tile);
+				maze[pos] = tile;
 			}
 		}
 
@@ -47,7 +47,7 @@ class Day18 {
 				var moves = [];
 				function explore(direction:Direction) {
 					var newPos = state.pos + direction;
-					var tile = maze.get(newPos);
+					var tile = maze[newPos];
 					if (tile == Wall || (tile.isKey() && tile != to)) {
 						return;
 					}

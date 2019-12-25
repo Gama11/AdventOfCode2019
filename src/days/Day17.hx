@@ -8,11 +8,10 @@ class Day17 {
 	public static function calculateAlignmentParameterSum(output:String):Int {
 		var image = outputToImage(output);
 		var sum = 0;
-		for (pos in image.keys()) {
+		for (pos => tile in image) {
 			function peek(direction) {
-				return image.get(pos + direction);
+				return image[pos + direction];
 			}
-			var tile = image.get(pos);
 			if (tile == Scaffolding && peek(Left) == Scaffolding && peek(Right) == Scaffolding && peek(Up) == Scaffolding && peek(Down) == Scaffolding) {
 				sum += pos.x * pos.y;
 			}
@@ -29,7 +28,7 @@ class Day17 {
 		var image = new Image();
 		for (y in 0...grid.length) {
 			for (x in 0...grid[0].length) {
-				image.set(new Point(x, y), grid[y][x]);
+				image[new Point(x, y)] = grid[y][x];
 			}
 		}
 		return image;
@@ -42,8 +41,8 @@ class Day17 {
 	static function findFullPath(image:Image):Array<Move> {
 		var pos = null;
 		var dir = null;
-		for (p in image.keys()) {
-			dir = switch image.get(p) {
+		for (p => tile in image) {
+			dir = switch tile {
 				case RobotLeft: Left;
 				case RobotRight: Right;
 				case RobotUp: Up;
@@ -58,7 +57,7 @@ class Day17 {
 		var moves = [];
 		var run = 0;
 		while (true) {
-			var nextTile = image.get(pos + dir);
+			var nextTile = image[pos + dir];
 			if (nextTile == Scaffolding) {
 				run++;
 				pos += dir;
@@ -69,13 +68,13 @@ class Day17 {
 				}
 				// try to turn
 				var left = dir.rotate(-1);
-				if (image.get(pos + left) == Scaffolding) {
+				if (image[pos + left] == Scaffolding) {
 					dir = left;
 					moves.push(TurnLeft);
 					continue;
 				}
 				var right = dir.rotate(1);
-				if (image.get(pos + right) == Scaffolding) {
+				if (image[pos + right] == Scaffolding) {
 					dir = right;
 					moves.push(TurnRight);
 					continue;

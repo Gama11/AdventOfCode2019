@@ -14,7 +14,7 @@ class Day24 {
 		var grid = input.split("\n").map(line -> line.split(""));
 		for (y in 0...grid.length) {
 			for (x in 0...grid[y].length) {
-				surface.set(new Point(x, y), grid[y][x]);
+				surface[new Point(x, y)] = grid[y][x];
 			}
 		}
 		return surface;
@@ -26,8 +26,8 @@ class Day24 {
 
 	static function calculateBiodiversity(surface:Surface):Int {
 		var biodiversity = 0;
-		for (pos in surface.keys()) {
-			if (surface.get(pos) == Bug) {
+		for (pos => tile in surface) {
+			if (tile == Bug) {
 				biodiversity += Std.int(Math.pow(2, pos.x + GridSize * pos.y));
 			}
 		}
@@ -35,7 +35,7 @@ class Day24 {
 	}
 
 	static function countAdjacentBugs(surface:Surface, pos:Point):Int {
-		return Direction.directions.count(dir -> surface.get(pos + dir) == Bug);
+		return Direction.directions.count(dir -> surface[pos + dir] == Bug);
 	}
 
 	static function nextTile(current:Tile, adjacentBugs:Int):Tile {
@@ -50,12 +50,11 @@ class Day24 {
 		var surface = parse(input);
 		var seen = new Map<String, Bool>();
 		while (!seen.exists(render(surface))) {
-			seen.set(render(surface), true);
+			seen[render(surface)] = true;
 			var next = new Surface();
-			for (pos in surface.keys()) {
+			for (pos => tile in surface) {
 				var adjacentBugs = countAdjacentBugs(surface, pos);
-				var tile = surface.get(pos);
-				next.set(pos, nextTile(tile, adjacentBugs));
+				next[pos] = nextTile(tile, adjacentBugs);
 			}
 			surface = next;
 		}
@@ -65,7 +64,7 @@ class Day24 {
 	public static function countBugsWithRecursiveSurfaces(input:String, minutes:Int):Int {
 		var surfaces = new RecursiveSurface();
 		function addLevel(surfaces:RecursiveSurface, depth:Int, surface:Surface) {
-			surface.set(new Point(Center, Center), Inner);
+			surface[new Point(Center, Center)] = Inner;
 			surfaces[depth] = surface;
 			return surface;
 		}
@@ -73,7 +72,7 @@ class Day24 {
 			var surface = new Surface();
 			for (x in 0...GridSize) {
 				for (y in 0...GridSize) {
-					surface.set(new Point(x, y), Empty);
+					surface[new Point(x, y)] = Empty;
 				}
 			}
 			return surface;
@@ -87,7 +86,7 @@ class Day24 {
 			function expand(direction:Int):Null<Surface> {
 				var level = depth + direction;
 				if (surfaces.exists(level)) {
-					return surfaces.get(level);
+					return surfaces[level];
 				}
 				if (adjacentBugs > 0) {
 					return addLevel(nextSurfaces, level, emptySurface());
@@ -96,12 +95,12 @@ class Day24 {
 			}
 			var recursiveBugs = 0;
 			function check(surface:Surface, pos:Point) {
-				if (surface.get(pos) == Bug) {
+				if (surface[pos] == Bug) {
 					recursiveBugs++;
 				}
 			}
 			for (dir in Direction.directions) {
-				switch surface.get(pos + dir) {
+				switch surface[pos + dir] {
 					case Inner:
 						var inner = expand(1);
 						if (inner == null) {
@@ -127,14 +126,14 @@ class Day24 {
 					case _:
 				}
 			}
-			return nextTile(surface.get(pos), adjacentBugs + recursiveBugs);
+			return nextTile(surface[pos], adjacentBugs + recursiveBugs);
 		}
 		for (_ in 0...minutes) {
 			var nextSurfaces = new RecursiveSurface();
 			for (depth => surface in surfaces) {
 				var next = new Surface();
 				for (pos in surface.keys()) {
-					next.set(pos, processTile(nextSurfaces, depth, surface, pos));
+					next[pos] = processTile(nextSurfaces, depth, surface, pos);
 				}
 				nextSurfaces[depth] = next;
 			}

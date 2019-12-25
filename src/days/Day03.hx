@@ -45,7 +45,7 @@ class Day03 {
 					p += line.direction;
 					steps++;
 
-					var cell = grid.get(p);
+					var cell = grid[p];
 					if (cell == null) {
 						cell = {steps: 0, wire: None};
 					}
@@ -69,7 +69,7 @@ class Day03 {
 		if (intersections.length == 0) {
 			throw 'no intersections';
 		}
-		var getDistance:Point->Int = if (distanceMetric == Manhattan) p -> p.distanceTo(centralPort) else p -> grid.get(p).steps;
+		var getDistance:Point->Int = if (distanceMetric == Manhattan) p -> p.distanceTo(centralPort) else p -> grid[p].steps;
 		return intersections.min(getDistance).value;
 	}
 }

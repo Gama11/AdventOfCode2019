@@ -10,7 +10,7 @@ class Day19 {
 		for (x in 0...size) {
 			for (y in 0...size) {
 				if (isBeingPulled(droneSystem, x, y)) {
-					beam.set(new Point(x, y), true);
+					beam[new Point(x, y)] = true;
 				}
 			}
 		}
